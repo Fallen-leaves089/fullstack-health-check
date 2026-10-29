@@ -1,5 +1,7 @@
 # fullstack-health-check
 
+[中文](README.md) | [English](README.en.md)
+
 一个面向已有项目的全栈体检技能包：先查项目自己的历史归档，再做「规范 / 规格」双轴审查，最后跑真实构建、数据库迁移和容器化回归，输出 P0-P3 分级问题清单。
 
 > 检查阶段默认只读。发现问题先报告，不擅自改代码。
@@ -18,29 +20,47 @@
 
 ```text
 fullstack-health-check/
-├── SKILL.md                              # 技能本体，宿主加载这个
-├── README.md                             # 本文件
+├── SKILL.md / SKILL.en.md                # 技能本体（中文默认 / 英文镜像）
+├── README.md / README.en.md              # 本文件
 ├── LICENSE                               # PolyForm Noncommercial 1.0.0 英文原文
 ├── LICENSE.zh-CN.md                      # 中文说明，不替代英文原文
-├── COMMERCIAL.md                         # 商业授权协商说明
+├── COMMERCIAL.md / COMMERCIAL.en.md      # 商业授权协商说明
+├── CONTRIBUTING.md / CONTRIBUTING.en.md  # 贡献指南与贡献授权
+├── SANITIZATION.md / SANITIZATION.en.md  # 脱敏范围、保留内容与自检记录
+├── SECURITY.md                           # 安全问题报告方式
 ├── NOTICE                                # 版权与 Required Notice
-├── SANITIZATION.md                       # 脱敏范围、保留内容与自检记录
 ├── CHANGELOG.md                          # 版本记录
-├── CONTRIBUTING.md                       # 贡献指南与贡献授权
+├── .gitattributes / .gitignore           # 换行符与忽略规则
+├── .editorconfig                         # 编辑器编码与缩进约定
+├── .github/workflows/verify.yml          # Windows / macOS / Linux CI
 ├── references/
-│   ├── windows-pitfalls.md               # Windows 环境坑与绕法
-│   ├── verification-playbook.md          # 纠错、定位与正反例验证
-│   └── report-template.md                # P0-P3 报告模板
+│   ├── windows-pitfalls.md / .en.md      # Windows 环境坑与绕法
+│   ├── verification-playbook.md / .en.md # 纠错、定位与正反例验证
+│   └── report-template.md / .en.md       # P0-P3 报告模板
 └── scripts/
-    ├── check-redaction.ps1               # 脱敏扫描器，自带正反例自检
-    └── verify-package.ps1                # 包完整性、编码、链接、脱敏总检
+    ├── check_redaction.py                # 跨平台脱敏扫描器
+    ├── verify_package.py                 # 跨平台总检
+    ├── check-redaction.ps1               # Windows PowerShell 扫描器
+    └── verify-package.ps1                # Windows PowerShell 总检
 ```
+
+## 平台支持
+
+| 平台 | 核心技能 | 自检方式 |
+|---|---|---|
+| Windows 10/11 + PowerShell 5.1/7 | 支持 | `scripts/verify-package.ps1` 或 `python scripts\verify_package.py` |
+| macOS / Linux + Python 3.9+ | 支持 | `python3 scripts/verify_package.py` |
+| WSL2 | 支持 | `python3 scripts/verify_package.py` 或 PowerShell 7 |
+| 其他类 Unix 系统 + Python 3.9+ | 支持 | `python3 scripts/verify_package.py` |
+| Codex / Claude Code / Agent Skills 宿主 | 支持 | 纯 Markdown 技能格式 |
+
+核心技能只依赖 Markdown 和 Git 命令，不绑定 Windows；Python 自检只用标准库，不需要联网安装依赖。Windows 专用命令集中在 `references/windows-pitfalls.md` / `.en.md`，其他平台可以跳过。
 
 ## 安装
 
 ### Codex / 兼容 Agent Skills 的宿主
 
-PowerShell：
+PowerShell（Windows）：
 
 ```powershell
 $skills = Join-Path $env:USERPROFILE '.codex\skills'
@@ -50,6 +70,13 @@ Copy-Item -LiteralPath '.\fullstack-health-check' -Destination $skills -Recurse 
 
 装完后技能目录应包含 `SKILL.md`。
 
+macOS / Linux：
+
+```bash
+mkdir -p ~/.codex/skills
+cp -R ./fullstack-health-check ~/.codex/skills/
+```
+
 ### Claude Code 或其他技能目录
 
 把整个 `fullstack-health-check/` 目录放进宿主的技能目录即可，例如 `~/.claude/skills/`。不同宿主的目录名不同，以宿主文档为准。
@@ -57,6 +84,16 @@ Copy-Item -LiteralPath '.\fullstack-health-check' -Destination $skills -Recurse 
 ### 手动安装
 
 解压后把 `fullstack-health-check/` 整个目录复制到技能目录，不要只复制 `SKILL.md`——`references/` 和 `scripts/` 也要一起带走。
+
+### 使用英文技能本体
+
+技能宿主默认加载 `SKILL.md`（中文）。如需英文版，把安装目录中的 `SKILL.md` 替换为 `SKILL.en.md`：
+
+```bash
+cp SKILL.en.md SKILL.md
+```
+
+仓库同时保留两份文件，方便对照和更新。
 
 ## 触发方式
 
@@ -78,13 +115,25 @@ Copy-Item -LiteralPath '.\fullstack-health-check' -Destination $skills -Recurse 
 
 ## 自检
 
-在包根目录运行：
+在包根目录运行（推荐，跨平台）：
+
+```bash
+python3 scripts/verify_package.py
+```
+
+Windows 也可以运行：
+
+```powershell
+python scripts\verify_package.py
+```
+
+PowerShell 版（Windows）：
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify-package.ps1
 ```
 
-> 非 Windows 环境把 `powershell` 换成 `pwsh`。
+> 非 Windows 环境如已安装 PowerShell 7，可把 `powershell` 换成 `pwsh`。
 
 它会检查：
 
@@ -93,8 +142,16 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify-package.ps1
 - Markdown 相对链接是否可解析
 - 脱敏扫描器的正反例自检是否通过
 - 包内是否残留个人路径、私钥、令牌、内网 IP 等敏感模式
+- `SKILL.md` / `SKILL.en.md` 的 frontmatter、版本和语言链接是否一致
 
-只跑脱敏扫描：
+只跑脱敏扫描（跨平台）：
+
+```bash
+python3 scripts/check_redaction.py --self-test
+python3 scripts/check_redaction.py --path .
+```
+
+Windows PowerShell 版：
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\check-redaction.ps1 -SelfTest
@@ -103,7 +160,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\check-redaction.ps
 
 ## 脱敏说明
 
-这个公开版从一份内部技能整理而来，已移除个人绝对路径、用户名、项目/客户标识、内部平台名称、真实域名与内网地址、密钥和事故细节。保留下来的是可复用的方法、Windows 环境坑和纠错纪律。
+这个公开版从一份内部技能整理而来，已移除个人绝对路径、用户名、项目/客户标识、内部平台名称、真实域名与内网地址、密钥和事故细节。保留下来的是可复用的方法、Windows 环境坑和纠错纪律。英文文档是中文原文的翻译，不引入新的内部信息。
 
 具体移除与保留范围见 `SANITIZATION.md`。如果你发现仍有可疑信息，请通过仓库 Issue 或维护者公开渠道联系，不要直接贴出敏感值。
 
@@ -117,8 +174,10 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\check-redaction.ps
 
 商业使用需要作者书面授权，但**可以和作者商量**。如需商业化，可以联系 `chenshuidelaye@qq.com`；授权方式、范围和费用按实际使用场景协商，见 `COMMERCIAL.md`。
 
+> GitHub 的许可证识别列表不包含 PolyForm，因此仓库页面可能显示 `NOASSERTION / Other`。这不代表没有许可证；以仓库中的 `LICENSE` 英文原文为准。
+
 ## 版本
 
-- 版本：1.0.0
+- 版本：1.1.0
 - 对应内部整理日期：2026-09-04
 - 公开发布整理：2026-10-29

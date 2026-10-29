@@ -1,5 +1,7 @@
 # 非商业许可（中文说明）
 
+[中文](LICENSE.zh-CN.md) | [English original](LICENSE)
+
 本作品采用 **PolyForm Noncommercial License 1.0.0**。英文原文见 `LICENSE`，具有最终效力；本文件只是方便中文读者理解的说明，不构成法律意见。
 
 ## 允许

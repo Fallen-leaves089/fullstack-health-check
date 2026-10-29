@@ -1,0 +1,46 @@
+name: Verify package
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: ${{ matrix.os }} / Python ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+        python-version:
+          - "3.9"
+          - "3.12"
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Verify package (Python)
+        run: python scripts/verify_package.py
+
+      - name: Verify package (Windows PowerShell 5.1)
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: .\scripts\verify-package.ps1
+
+      - name: Verify package (PowerShell 7)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: .\scripts\verify-package.ps1

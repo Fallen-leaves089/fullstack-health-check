@@ -1,5 +1,7 @@
 # <PROJECT> 全栈检查报告
 
+[中文](report-template.md) | [English](report-template.en.md)
+
 - 检查日期：`YYYY-MM-DD`
 - 检查人：`<NAME>`
 - 基准点：`<COMMIT / BRANCH / TAG>`

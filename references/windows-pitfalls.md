@@ -1,5 +1,7 @@
 # Windows 环境坑与绕法
 
+[中文](windows-pitfalls.md) | [English](windows-pitfalls.en.md)
+
 这份清单来自真实的全栈检查现场，目标是让检查者在 Windows 上少撞墙。命令以 PowerShell 为主；需要 Git Bash / WSL 时会单独标注。
 
 > 原则：先确认当前 shell、解释器和工具路径，再执行命令。不要在 PowerShell 里套 bash 语法，也不要在 Git Bash 里假设 Windows 工具都能直接调用。

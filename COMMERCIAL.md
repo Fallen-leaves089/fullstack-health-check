@@ -1,5 +1,7 @@
 # 商业授权
 
+[中文](COMMERCIAL.md) | [English](COMMERCIAL.en.md)
+
 本作品采用 **PolyForm Noncommercial License 1.0.0**，默认只允许非商业用途。
 
 如果你希望把本作品或其修改版用于商业场景，需要先取得作者的书面授权。作者愿意协商，不要求你一开始就给出完整方案。

@@ -1,11 +1,13 @@
 # 脱敏说明
 
+[中文](SANITIZATION.md) | [English](SANITIZATION.en.md)
+
 本文件记录公开版相对内部整理版做了什么处理，以及为什么保留某些内容。目标不是“看起来没有敏感词”，而是**在不泄露可识别信息的前提下，保留可复用的工程经验**。
 
 ## 来源
 
 - 内部技能整理日期：2026-09-04
-- 公开版版本：1.0.0
+- 公开版版本：1.1.0
 - 处理方式：逐段重写，不用简单查找替换；敏感段落直接删除或抽象化
 
 ## 已移除
@@ -25,7 +27,12 @@
 - **纠错与验证纪律**：正反两例、能变红的反馈回路、最小复现、3-5 个可证伪假设、单变量探测、回归测试、清理调试痕迹。
 - **安全底线**：不信任 cwd、目录指纹校验、fail-closed、环境变量强校验、产物自检。
 - **脱敏纪律本身**：展示日志/配置前先替换密钥，覆盖 JSON/TOML/YAML/ENV，不读取敏感文件内容。
+- **跨平台验证方法**：Python 3.9+ 标准库扫描器/总检，以及 Windows、macOS、Linux 三平台 CI。
 - **作者公开的商业联系邮箱**：`chenshuidelaye@qq.com` 是作者要求主动公开的，不属于脱敏遗漏。
+
+## 英译说明
+
+英文文档是中文原文的翻译，不引入新的内部资料。流程细节以中文文档为维护源；法律条款以 `LICENSE` 英文原文为准。
 
 ## 关键改写
 
@@ -39,16 +46,27 @@
 
 ## 自动化检查
 
-包内提供两个脚本：
+包内提供 Python 与 PowerShell 两条等价路径：
+
+```bash
+# 跨平台：只跑脱敏扫描器的正反例自检
+python3 scripts/check_redaction.py --self-test
+
+# 跨平台：扫描当前包
+python3 scripts/check_redaction.py --path . --quiet
+
+# 跨平台：总检（必需文件、UTF-8 无 BOM、相对链接、frontmatter、脱敏）
+python3 scripts/verify_package.py
+```
 
 ```powershell
-# 只跑脱敏扫描器的正反例自检
+# Windows PowerShell：只跑脱敏扫描器的正反例自检
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\check-redaction.ps1 -SelfTest
 
-# 扫描当前包
+# Windows PowerShell：扫描当前包
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\check-redaction.ps1 -Path .
 
-# 总检：必需文件、UTF-8 无 BOM、相对链接、脱敏自检、包扫描
+# Windows PowerShell：总检
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify-package.ps1
 ```
 
@@ -95,6 +113,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify-package.ps1
 - [x] 不含真实域名、内网 IP、主机名、端口（自检夹具除外）
 - [x] 许可文件与商业授权说明齐全
 - [x] 版本、日期、目录结构一致
+- [x] Python 总检在 Windows、macOS、Linux、Python 3.9/3.12 上通过 CI
 
 ## 发现问题怎么报
 

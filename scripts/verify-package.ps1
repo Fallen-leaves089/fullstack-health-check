@@ -40,17 +40,32 @@ if (-not (Get-Item -LiteralPath $root).PSIsContainer) {
 $failures = New-Object System.Collections.Generic.List[string]
 $required = @(
     'SKILL.md',
+    'SKILL.en.md',
     'README.md',
+    'README.en.md',
     'LICENSE',
     'LICENSE.zh-CN.md',
     'COMMERCIAL.md',
+    'COMMERCIAL.en.md',
     'NOTICE',
     'SANITIZATION.md',
+    'SANITIZATION.en.md',
+    'SECURITY.md',
     'CHANGELOG.md',
     'CONTRIBUTING.md',
+    'CONTRIBUTING.en.md',
+    '.gitattributes',
+    '.gitignore',
+    '.editorconfig',
+    '.github/workflows/verify.yml',
     'references/windows-pitfalls.md',
+    'references/windows-pitfalls.en.md',
     'references/verification-playbook.md',
+    'references/verification-playbook.en.md',
     'references/report-template.md',
+    'references/report-template.en.md',
+    'scripts/check_redaction.py',
+    'scripts/verify_package.py',
     'scripts/check-redaction.ps1',
     'scripts/verify-package.ps1'
 )
@@ -65,10 +80,14 @@ $textExtensions = @(
     '.md', '.txt', '.ps1', '.psm1', '.json', '.yml', '.yaml', '.toml',
     '.env', '.sh', '.cmd', '.bat', '.js', '.ts', '.py', '.xml', '.properties', ''
 )
+$textNames = @('.gitattributes', '.gitignore', '.editorconfig')
 
 $textFiles = @(
     Get-ChildItem -LiteralPath $root -Recurse -File -ErrorAction Stop |
-        Where-Object { $textExtensions -contains $_.Extension.ToLowerInvariant() }
+        Where-Object {
+            ($textExtensions -contains $_.Extension.ToLowerInvariant()) -or
+            ($textNames -contains $_.Name)
+        }
 )
 
 foreach ($file in $textFiles) {

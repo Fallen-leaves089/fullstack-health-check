@@ -35,7 +35,7 @@ param(
     [switch]$SelfTest,
     [switch]$Quiet,
     [string[]]$ExtraPatterns = @(),
-    [string[]]$ExcludeFiles = @('check-redaction.ps1')
+    [string[]]$ExcludeFiles = @('check-redaction.ps1', 'check_redaction.py')
 )
 
 $ErrorActionPreference = 'Stop'
@@ -97,6 +97,7 @@ function Invoke-RedactionScan {
         '.md', '.txt', '.ps1', '.psm1', '.json', '.yml', '.yaml', '.toml',
         '.env', '.sh', '.cmd', '.bat', '.js', '.ts', '.py', '.xml', '.properties', ''
     )
+    $textNames = @('.gitattributes', '.gitignore', '.editorconfig')
     $skipDirPattern = '[\\/](\.git|node_modules|bin|obj|dist|build|\.vs|\.idea)[\\/]'
 
     if ($isSingleFile) {
@@ -105,7 +106,7 @@ function Invoke-RedactionScan {
         $files = @(
             Get-ChildItem -LiteralPath $rootFull -Recurse -File -ErrorAction Stop |
                 Where-Object {
-                    ($textExtensions -contains $_.Extension.ToLowerInvariant()) -and
+                    (($textExtensions -contains $_.Extension.ToLowerInvariant()) -or ($textNames -contains $_.Name)) -and
                     ($SkipFiles -notcontains $_.Name) -and
                     ($_.FullName -notmatch $skipDirPattern)
                 }
