@@ -6,6 +6,27 @@
 
 > 检查阶段默认只读。发现问题先报告，不擅自改代码。
 
+## 先安装
+
+这是一个 Skill 包，不是双击安装的软件。解压后，把整个 `fullstack-health-check/` 目录复制到宿主的技能目录。
+
+Windows + Codex：
+
+```powershell
+$skills = Join-Path $env:USERPROFILE '.codex\skills'
+New-Item -ItemType Directory -Force -Path $skills | Out-Null
+Copy-Item -LiteralPath '.\fullstack-health-check' -Destination $skills -Recurse -Force
+```
+
+macOS / Linux + Codex：
+
+```bash
+mkdir -p ~/.codex/skills
+cp -R ./fullstack-health-check ~/.codex/skills/
+```
+
+Claude Code 或其他 Agent Skills 宿主：把整个目录放进对应技能目录，例如 `~/.claude/skills/`。装好后目录根部必须有 `SKILL.md`，不要只复制这一个文件。完整说明见下方「安装」。
+
 ## 它解决什么问题
 
 很多“全栈检查”最后变成两件事：读一遍代码，然后列一堆正确的废话。这个技能包强制做三件事：

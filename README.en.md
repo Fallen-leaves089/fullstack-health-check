@@ -6,6 +6,27 @@ A periodic health-check skill for existing full-stack projects. It combines proj
 
 > Read-only by default. Report first; do not change code without an explicit instruction.
 
+## Install first
+
+This is a skill package, not a double-click installer. After extracting it, copy the entire `fullstack-health-check/` directory into your host's skills directory.
+
+Windows + Codex:
+
+```powershell
+$skills = Join-Path $env:USERPROFILE '.codex\skills'
+New-Item -ItemType Directory -Force -Path $skills | Out-Null
+Copy-Item -LiteralPath '.\fullstack-health-check' -Destination $skills -Recurse -Force
+```
+
+macOS / Linux + Codex:
+
+```bash
+mkdir -p ~/.codex/skills
+cp -R ./fullstack-health-check ~/.codex/skills/
+```
+
+Claude Code or another Agent Skills host: put the whole directory in that host's skills directory, for example `~/.claude/skills/`. The directory root must contain `SKILL.md`; do not copy only that file. See "Install" below for full details.
+
 ## What it solves
 
 Many "full-stack checks" turn into two things: reading some code, then listing generic advice. This skill enforces three things instead:
