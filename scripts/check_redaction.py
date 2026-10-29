@@ -42,6 +42,7 @@ TEXT_EXTENSIONS = {
     ".py",
     ".xml",
     ".properties",
+    ".pub",
     "",
 }
 

@@ -1,7 +1,7 @@
 ---
 name: fullstack-health-check
 description: 全栈项目的周期性体检。组合项目既有归档、外部规范双轴审查、真实构建与容器化回归，输出 P0-P3 分级问题清单。用户说「做个全栈检查」「全面问题检查」「上线前体检」时使用。
-version: 1.1.1
+version: 1.1.2
 license: PolyForm-Noncommercial-1.0.0
 ---
 

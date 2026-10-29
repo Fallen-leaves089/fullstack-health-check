@@ -3,3 +3,10 @@ __pycache__/
 *.pyc
 .DS_Store
 Thumbs.db
+
+# Release output and local signing material
+/fullstack-health-check-*.zip
+/SHA256SUMS
+/SHA256SUMS.sig
+*.key
+*.pem

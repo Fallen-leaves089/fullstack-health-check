@@ -51,6 +51,10 @@ $required = @(
     'SANITIZATION.md',
     'SANITIZATION.en.md',
     'SECURITY.md',
+    'SIGNING.md',
+    'SIGNING.en.md',
+    'release-signing-key.pub',
+    'allowed_signers',
     'CHANGELOG.md',
     'CONTRIBUTING.md',
     'CONTRIBUTING.en.md',
@@ -80,7 +84,7 @@ foreach ($rel in $required) {
 
 $textExtensions = @(
     '.md', '.txt', '.ps1', '.psm1', '.json', '.yml', '.yaml', '.toml',
-    '.env', '.sh', '.cmd', '.bat', '.js', '.ts', '.py', '.xml', '.properties', ''
+    '.env', '.sh', '.cmd', '.bat', '.js', '.ts', '.py', '.xml', '.properties', '.pub', ''
 )
 $textNames = @('.gitattributes', '.gitignore', '.editorconfig')
 

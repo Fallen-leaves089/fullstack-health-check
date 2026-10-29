@@ -95,7 +95,7 @@ function Invoke-RedactionScan {
 
     $textExtensions = @(
         '.md', '.txt', '.ps1', '.psm1', '.json', '.yml', '.yaml', '.toml',
-        '.env', '.sh', '.cmd', '.bat', '.js', '.ts', '.py', '.xml', '.properties', ''
+        '.env', '.sh', '.cmd', '.bat', '.js', '.ts', '.py', '.xml', '.properties', '.pub', ''
     )
     $textNames = @('.gitattributes', '.gitignore', '.editorconfig')
     $skipDirPattern = '[\\/](\.git|node_modules|bin|obj|dist|build|\.vs|\.idea)[\\/]'

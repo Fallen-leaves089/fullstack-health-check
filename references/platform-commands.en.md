@@ -132,7 +132,19 @@ A pipeline mixes upstream failure with downstream success. To check the command 
 - Do not put Unix sockets on `/mnt/*`; use `/run` or a Linux-native filesystem.
 - When passing complex JSON or quotes through `wsl.exe ... bash -lc '...'`, write a temporary `.sh` file and execute it instead of fighting Windows argument parsing.
 
-## 7. Minimum verification checklist
+## 7. Release-download verification
+
+Put the zip, `SHA256SUMS`, `SHA256SUMS.sig`, and `allowed_signers` in the same directory. All three platforms use `ssh-keygen` for the fingerprint and signature, but their hash tools differ:
+
+| Operation | Windows PowerShell 5.1 / 7 | macOS | Linux |
+|---|---|---|---|
+| Check the public-key fingerprint | `ssh-keygen -lf release-signing-key.pub` | Same | Same |
+| Check the archive hash | `Get-FileHash -LiteralPath .\fullstack-health-check-<version>.zip -Algorithm SHA256` | `shasum -a 256 fullstack-health-check-<version>.zip` | `sha256sum fullstack-health-check-<version>.zip` |
+| Verify the signature | `cmd /c "ssh-keygen.exe -Y verify -f allowed_signers -I fullstack-health-check-release -n file -s SHA256SUMS.sig < SHA256SUMS"` | `ssh-keygen -Y verify -f allowed_signers -I fullstack-health-check-release -n file -s SHA256SUMS.sig < SHA256SUMS` | Same as macOS |
+
+Windows PowerShell 5.1 does not support `<` input redirection, so Windows uses `cmd /c` only to feed `SHA256SUMS` to `ssh-keygen`. Do not replace it with `Get-Content | ssh-keygen`; pipeline encoding can change the bytes being verified. See `SIGNING.en.md` for the complete instructions.
+
+## 8. Minimum verification checklist
 
 - [ ] Confirmed whether the shell is PowerShell 5.1, PowerShell 7, bash/zsh, or WSL2.
 - [ ] Python, Node, Maven, and Gradle use the command for the current platform.

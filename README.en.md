@@ -28,6 +28,9 @@ fullstack-health-check/
 ├── CONTRIBUTING.md / CONTRIBUTING.en.md  # contribution guide
 ├── SANITIZATION.md / SANITIZATION.en.md  # sanitization scope and audit
 ├── SECURITY.md                           # security reporting
+├── SIGNING.md / SIGNING.en.md            # download verification and release signing
+├── release-signing-key.pub               # Ed25519 release public key
+├── allowed_signers                       # permitted OpenSSH signing identity
 ├── NOTICE                                # copyright and Required Notice
 ├── CHANGELOG.md                          # version history
 ├── .gitattributes / .gitignore           # line endings and ignore rules
@@ -95,6 +98,52 @@ cp SKILL.en.md SKILL.md
 ```
 
 Keep both files in the repository so readers can compare them.
+
+## Download and signatures
+
+Download official artifacts from [GitHub Releases](https://github.com/Fallen-leaves089/fullstack-health-check/releases) and get all of these files:
+
+- `fullstack-health-check-<version>.zip`
+- `SHA256SUMS`
+- `SHA256SUMS.sig`
+- `allowed_signers`
+- `release-signing-key.pub`
+
+Check the public-key fingerprint first:
+
+```bash
+ssh-keygen -lf release-signing-key.pub
+```
+
+macOS (bundled `shasum`):
+
+```bash
+shasum -a 256 -c SHA256SUMS
+ssh-keygen -Y verify -f allowed_signers -I fullstack-health-check-release -n file -s SHA256SUMS.sig < SHA256SUMS
+```
+
+Linux (GNU coreutils):
+
+```bash
+sha256sum -c SHA256SUMS
+ssh-keygen -Y verify -f allowed_signers -I fullstack-health-check-release -n file -s SHA256SUMS.sig < SHA256SUMS
+```
+
+Windows PowerShell 5.1 / 7:
+
+```powershell
+$zip = '.\fullstack-health-check-<version>.zip'
+$line = Get-Content .\SHA256SUMS | Where-Object { $_ -match [regex]::Escape([IO.Path]::GetFileName($zip)) } | Select-Object -First 1
+if (-not $line) { throw 'Checksum entry not found' }
+$expected = ($line -split '\s+')[0].ToLowerInvariant()
+$actual = (Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLowerInvariant()
+if ($actual -ne $expected) { throw 'SHA256 mismatch' }
+
+cmd /c "ssh-keygen.exe -Y verify -f allowed_signers -I fullstack-health-check-release -n file -s SHA256SUMS.sig < SHA256SUMS"
+if ($LASTEXITCODE -ne 0) { throw 'Signature verification failed' }
+```
+
+See `SIGNING.en.md` for the complete instructions. `SHA256SUMS` and `SHA256SUMS.sig` are separate assets created after the zip; they are not inside the zip.
 
 ## Triggers
 
@@ -169,6 +218,6 @@ Commercial use requires a written license from the author, but **the author is o
 
 ## Version
 
-- Version: 1.1.1
+- Version: 1.1.2
 - Internal source date: 2026-09-04
 - Public release: 2026-10-29

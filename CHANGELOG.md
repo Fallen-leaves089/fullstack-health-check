@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.1.2 - 2026-10-29
+
+### 中文
+
+- 新增 OpenSSH Ed25519 发布签名：`release-signing-key.pub`、`allowed_signers`、`SIGNING.md` / `SIGNING.en.md`。
+- 下载说明补充 SHA256SUMS、`SHA256SUMS.sig` 和跨平台验证命令。
+- 明确签名私钥只保存在维护者本机，不进入仓库、Release 或 CI 日志。
+- 发布 zip 使用 ASCII 文件名 `fullstack-health-check-<version>.zip`，便于跨平台下载和校验；中文文件名作为本地副本保留。
+- 版本升级到 1.1.2。
+
+### English
+
+- Added OpenSSH Ed25519 release signing: `release-signing-key.pub`, `allowed_signers`, and `SIGNING.md` / `SIGNING.en.md`.
+- Expanded download instructions with `SHA256SUMS`, `SHA256SUMS.sig`, and cross-platform verification commands.
+- Documented that the private key stays on the maintainer's machine and never enters the repository, a Release, or CI logs.
+- Release zips use the ASCII name `fullstack-health-check-<version>.zip` for cross-platform downloads; the Chinese filename remains as a local copy.
+- Bumped the version to 1.1.2.
+
 ## 1.1.1 - 2026-10-29
 
 ### 中文

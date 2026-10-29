@@ -132,7 +132,19 @@ fi
 - Unix socket 不要放在 `/mnt/*`；使用 `/run` 或 Linux 原生文件系统。
 - 通过 `wsl.exe ... bash -lc '...'` 传复杂 JSON/引号时，优先写临时 `.sh` 文件再执行，避免 Windows 参数解析吞字符。
 
-## 7. 最小验证清单
+## 7. 发布包下载校验
+
+把 zip、`SHA256SUMS`、`SHA256SUMS.sig` 和 `allowed_signers` 下载到同一目录。三个平台都可以用 `ssh-keygen` 核对公钥指纹和签名，但哈希工具不同：
+
+| 操作 | Windows PowerShell 5.1 / 7 | macOS | Linux |
+|---|---|---|---|
+| 核对公钥指纹 | `ssh-keygen -lf release-signing-key.pub` | 同左 | 同左 |
+| 校验文件哈希 | `Get-FileHash -LiteralPath .\fullstack-health-check-<version>.zip -Algorithm SHA256` | `shasum -a 256 fullstack-health-check-<version>.zip` | `sha256sum fullstack-health-check-<version>.zip` |
+| 验证签名 | `cmd /c "ssh-keygen.exe -Y verify -f allowed_signers -I fullstack-health-check-release -n file -s SHA256SUMS.sig < SHA256SUMS"` | `ssh-keygen -Y verify -f allowed_signers -I fullstack-health-check-release -n file -s SHA256SUMS.sig < SHA256SUMS` | 同左 |
+
+PowerShell 5.1 不支持 `<` 输入重定向，所以 Windows 用 `cmd /c` 只负责把 `SHA256SUMS` 送给 `ssh-keygen`；不要改成 `Get-Content | ssh-keygen`，管道编码可能改变被验证的字节。完整说明见 `SIGNING.md`。
+
+## 8. 最小验证清单
 
 - [ ] 已确认当前是 PowerShell 5.1、PowerShell 7、bash/zsh 还是 WSL2。
 - [ ] Python、Node、Maven、Gradle 使用的是当前平台对应的命令。

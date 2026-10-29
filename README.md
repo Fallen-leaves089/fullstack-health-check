@@ -28,6 +28,9 @@ fullstack-health-check/
 ├── CONTRIBUTING.md / CONTRIBUTING.en.md  # 贡献指南与贡献授权
 ├── SANITIZATION.md / SANITIZATION.en.md  # 脱敏范围、保留内容与自检记录
 ├── SECURITY.md                           # 安全问题报告方式
+├── SIGNING.md / SIGNING.en.md            # 下载校验与发布签名说明
+├── release-signing-key.pub               # Ed25519 发布公钥
+├── allowed_signers                       # OpenSSH 允许签名身份
 ├── NOTICE                                # 版权与 Required Notice
 ├── CHANGELOG.md                          # 版本记录
 ├── .gitattributes / .gitignore           # 换行符与忽略规则
@@ -95,6 +98,52 @@ cp SKILL.en.md SKILL.md
 ```
 
 仓库同时保留两份文件，方便对照和更新。
+
+## 下载与签名
+
+正式下载请从 [GitHub Releases](https://github.com/Fallen-leaves089/fullstack-health-check/releases) 获取，并同时下载：
+
+- `fullstack-health-check-<version>.zip`
+- `SHA256SUMS`
+- `SHA256SUMS.sig`
+- `allowed_signers`
+- `release-signing-key.pub`
+
+先核对公钥指纹：
+
+```bash
+ssh-keygen -lf release-signing-key.pub
+```
+
+macOS 自带 `shasum`：
+
+```bash
+shasum -a 256 -c SHA256SUMS
+ssh-keygen -Y verify -f allowed_signers -I fullstack-health-check-release -n file -s SHA256SUMS.sig < SHA256SUMS
+```
+
+Linux（GNU coreutils）：
+
+```bash
+sha256sum -c SHA256SUMS
+ssh-keygen -Y verify -f allowed_signers -I fullstack-health-check-release -n file -s SHA256SUMS.sig < SHA256SUMS
+```
+
+Windows PowerShell 5.1 / 7：
+
+```powershell
+$zip = '.\fullstack-health-check-<version>.zip'
+$line = Get-Content .\SHA256SUMS | Where-Object { $_ -match [regex]::Escape([IO.Path]::GetFileName($zip)) } | Select-Object -First 1
+if (-not $line) { throw 'Checksum entry not found' }
+$expected = ($line -split '\s+')[0].ToLowerInvariant()
+$actual = (Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLowerInvariant()
+if ($actual -ne $expected) { throw 'SHA256 mismatch' }
+
+cmd /c "ssh-keygen.exe -Y verify -f allowed_signers -I fullstack-health-check-release -n file -s SHA256SUMS.sig < SHA256SUMS"
+if ($LASTEXITCODE -ne 0) { throw 'Signature verification failed' }
+```
+
+完整说明见 `SIGNING.md`。`SHA256SUMS` 和 `SHA256SUMS.sig` 是 zip 生成后的独立发布资产，不放进 zip 内部。
 
 ## 触发方式
 
@@ -179,6 +228,6 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\check-redaction.ps
 
 ## 版本
 
-- 版本：1.1.1
+- 版本：1.1.2
 - 对应内部整理日期：2026-09-04
 - 公开发布整理：2026-10-29

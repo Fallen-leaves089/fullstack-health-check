@@ -1,7 +1,7 @@
 ---
 name: fullstack-health-check
 description: Periodic health check for full-stack projects. Combines project history, a two-axis standards/spec review, and real build/container regressions to produce a graded P0-P3 findings report. Use when the user asks for a full-stack check, pre-release audit, or comprehensive issue review.
-version: 1.1.1
+version: 1.1.2
 license: PolyForm-Noncommercial-1.0.0
 ---
 
