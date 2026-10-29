@@ -58,6 +58,8 @@ $required = @(
     '.gitignore',
     '.editorconfig',
     '.github/workflows/verify.yml',
+    'references/platform-commands.md',
+    'references/platform-commands.en.md',
     'references/windows-pitfalls.md',
     'references/windows-pitfalls.en.md',
     'references/verification-playbook.md',

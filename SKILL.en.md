@@ -1,7 +1,7 @@
 ---
 name: fullstack-health-check
 description: Periodic health check for full-stack projects. Combines project history, a two-axis standards/spec review, and real build/container regressions to produce a graded P0-P3 findings report. Use when the user asks for a full-stack check, pre-release audit, or comprehensive issue review.
-version: 1.1.0
+version: 1.1.1
 license: PolyForm-Noncommercial-1.0.0
 ---
 
@@ -13,7 +13,7 @@ license: PolyForm-Noncommercial-1.0.0
 
 Run a periodic health check on an existing project and produce a **graded, evidence-linked, checkable** findings report. It works for web frontends/backends, mobile apps, database migrations, containerized deployments, and other multi-layer projects.
 
-> The core workflow is platform-neutral. Windows-only commands live in `references/windows-pitfalls.en.md`; macOS, Linux, and WSL2 can skip that section.
+> The core workflow is platform-neutral. See `references/platform-commands.en.md` for side-by-side commands; Windows-only commands and traps live in `references/windows-pitfalls.en.md`, and macOS, Linux, and WSL2 can skip that section.
 
 ## Iron rules (higher priority than the rest of this file)
 
@@ -115,6 +115,21 @@ Choose the negative case carefully: a sample that "also fails for another reason
 **Do not swallow the exit status of the command under test** with `>/dev/null 2>&1` or a pipeline. "The command crashed" and "the command finished cleanly" become indistinguishable, which is a common source of false negatives. In PowerShell, capture `$LASTEXITCODE` before formatting or filtering.
 
 See `references/verification-playbook.en.md` for the full debugging and verification workflow.
+
+## Platform command reference (identify the shell first)
+
+The same task uses different commands on different systems. Do not put PowerShell syntax into bash/zsh, and do not copy Unix paths directly into Windows commands. See `references/platform-commands.en.md` for the full guide; common differences:
+
+| Operation | Windows PowerShell | macOS / Linux / WSL2 |
+|---|---|---|
+| Current directory | `Get-Location` | `pwd` |
+| Environment variable | `$env:NAME` | `$NAME` / `printenv NAME` |
+| Python | `py -3` or `python` | `python3` |
+| venv interpreter | `.\.venv\Scripts\python.exe` | `.venv/bin/python` |
+| Command exists | `Get-Command` / `where.exe` | `command -v` |
+| Inspect a port | `Get-NetTCPConnection -LocalPort <port>` | `ss -ltnp` / `lsof -iTCP:<port>` |
+
+WSL2 uses Linux commands. Windows and WSL differ in paths, line endings, and how Docker starts; state the actual shell and interpreter in the report.
 
 ## Windows traps (check before trying)
 

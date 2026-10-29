@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.1.1 - 2026-10-29
+
+### 中文
+
+- 新增 `references/platform-commands.md` 与英文版，按 Windows PowerShell 5.1/7、macOS/Linux bash/zsh、WSL2 分列常用命令。
+- 覆盖路径与环境变量、Python/Node/Java、Docker/端口/进程、权限与清理、退出码与命令串联、WSL2 路径与 socket 差异。
+- 在 `README` 和 `SKILL` 中加入平台命令对照入口，避免用户把不同 shell 的命令混用。
+- 校验脚本的必需文件清单加入平台命令手册；不改变核心检查流程。
+
+### English
+
+- Added `references/platform-commands.md` and its English companion with side-by-side commands for Windows PowerShell 5.1/7, macOS/Linux bash/zsh, and WSL2.
+- Covers paths and environment variables, Python/Node/Java, Docker/ports/processes, permissions and cleanup, exit codes and command chaining, and WSL2 path/socket differences.
+- Linked the command guide from the README and SKILL files so users do not mix shells.
+- Added the platform guide to the verifier's required-file list; the core review workflow is unchanged.
+
 ## 1.1.0 - 2026-10-29
 
 ### 中文

@@ -7,7 +7,7 @@ This document records what changed from the internal edition to the public editi
 ## Source
 
 - Internal skill compilation date: 2026-09-04
-- Public package version: 1.1.0
+- Public package version: 1.1.1
 - Method: rewrite section by section instead of find-and-replace; delete or abstract sensitive passages
 
 ## Removed
@@ -27,6 +27,7 @@ This document records what changed from the internal edition to the public editi
 - **Debugging and verification discipline**: positive and negative cases, a feedback loop that can turn red, minimal reproduction, 3-5 falsifiable hypotheses, single-variable probes, regression tests, and cleanup.
 - **Security baseline**: do not trust the current working directory, validate directory fingerprints, fail closed, validate environment variables, and inspect build artifacts.
 - **Redaction discipline**: replace secrets before showing logs or configuration; cover JSON, TOML, YAML, and ENV; do not read sensitive files.
+- **Cross-platform command reference**: Windows PowerShell, macOS/Linux bash/zsh, and WSL2 equivalents so reviewers use the shell they are actually in.
 - **The author's public commercial contact email**: `chenshuidelaye@qq.com` is intentionally public and is not a sanitization leak.
 
 ## Key rewrites

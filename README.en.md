@@ -34,6 +34,7 @@ fullstack-health-check/
 ├── .editorconfig                         # editor encoding and indentation
 ├── .github/workflows/verify.yml          # 3-OS CI
 ├── references/
+│   ├── platform-commands.md / .en.md     # Windows / macOS / Linux / WSL2 commands
 │   ├── windows-pitfalls.md / .en.md      # Windows traps and workarounds
 │   ├── verification-playbook.md / .en.md # debugging and verification discipline
 │   └── report-template.md / .en.md       # P0-P3 report template
@@ -54,7 +55,7 @@ fullstack-health-check/
 | Other Unix-like systems + Python 3.9+ | Yes | `python3 scripts/verify_package.py` |
 | Codex / Claude Code / Agent Skills hosts | Yes | Markdown skill format |
 
-The core skill is plain Markdown and Git commands, so it is not tied to Windows. The Python verifier uses only the standard library and does not need network access. Windows-specific commands are isolated in `references/windows-pitfalls.md` / `.en.md`.
+The core skill is plain Markdown and Git commands, so it is not tied to Windows. The Python verifier uses only the standard library and does not need network access. See `references/platform-commands.md` / `.en.md` for side-by-side Windows, macOS, Linux, and WSL2 commands; Windows-specific traps are isolated in `references/windows-pitfalls.md` / `.en.md`.
 
 ## Install
 
@@ -168,6 +169,6 @@ Commercial use requires a written license from the author, but **the author is o
 
 ## Version
 
-- Version: 1.1.0
+- Version: 1.1.1
 - Internal source date: 2026-09-04
 - Public release: 2026-10-29

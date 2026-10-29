@@ -34,6 +34,7 @@ fullstack-health-check/
 ├── .editorconfig                         # 编辑器编码与缩进约定
 ├── .github/workflows/verify.yml          # Windows / macOS / Linux CI
 ├── references/
+│   ├── platform-commands.md / .en.md     # Windows / macOS / Linux / WSL2 命令对照
 │   ├── windows-pitfalls.md / .en.md      # Windows 环境坑与绕法
 │   ├── verification-playbook.md / .en.md # 纠错、定位与正反例验证
 │   └── report-template.md / .en.md       # P0-P3 报告模板
@@ -54,7 +55,7 @@ fullstack-health-check/
 | 其他类 Unix 系统 + Python 3.9+ | 支持 | `python3 scripts/verify_package.py` |
 | Codex / Claude Code / Agent Skills 宿主 | 支持 | 纯 Markdown 技能格式 |
 
-核心技能只依赖 Markdown 和 Git 命令，不绑定 Windows；Python 自检只用标准库，不需要联网安装依赖。Windows 专用命令集中在 `references/windows-pitfalls.md` / `.en.md`，其他平台可以跳过。
+核心技能只依赖 Markdown 和 Git 命令，不绑定 Windows；Python 自检只用标准库，不需要联网安装依赖。常见操作的三平台写法见 `references/platform-commands.md` / `.en.md`；Windows 专用坑集中在 `references/windows-pitfalls.md` / `.en.md`，其他平台可以跳过。
 
 ## 安装
 
@@ -178,6 +179,6 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\check-redaction.ps
 
 ## 版本
 
-- 版本：1.1.0
+- 版本：1.1.1
 - 对应内部整理日期：2026-09-04
 - 公开发布整理：2026-10-29

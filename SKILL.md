@@ -1,7 +1,7 @@
 ---
 name: fullstack-health-check
 description: 全栈项目的周期性体检。组合项目既有归档、外部规范双轴审查、真实构建与容器化回归，输出 P0-P3 分级问题清单。用户说「做个全栈检查」「全面问题检查」「上线前体检」时使用。
-version: 1.1.0
+version: 1.1.1
 license: PolyForm-Noncommercial-1.0.0
 ---
 
@@ -11,7 +11,7 @@ license: PolyForm-Noncommercial-1.0.0
 
 给一个已有项目做周期性体检，产出**分级、带证据位置、可勾选**的问题清单。适用于 Web 前后端、移动端、数据库迁移、容器化部署等多层项目。
 
-> 核心流程与平台无关，Windows 专用命令单独放在 `references/windows-pitfalls.md`；macOS、Linux 和 WSL2 可以跳过 Windows 小节。
+> 核心流程与平台无关。三平台命令对照见 `references/platform-commands.md`；Windows 专用命令和坑单独放在 `references/windows-pitfalls.md`，macOS、Linux 和 WSL2 可以跳过 Windows 小节。
 
 ## 铁律（优先级高于本文件其余内容）
 
@@ -117,6 +117,21 @@ diff 为空或 ref 不存在，就地停下问用户。不要进了子代理或�
 PowerShell 里先取 `$LASTEXITCODE`，再做格式化或过滤。
 
 更完整的纠错/定位流程见 `references/verification-playbook.md`。
+
+## 平台命令对照（先确认 shell）
+
+同一任务在不同系统上的命令不同，不要把 PowerShell 语法套到 bash/zsh，也不要把 Unix 路径直接套到 Windows。完整对照见 `references/platform-commands.md`，高频差异：
+
+| 操作 | Windows PowerShell | macOS / Linux / WSL2 |
+|---|---|---|
+| 当前目录 | `Get-Location` | `pwd` |
+| 环境变量 | `$env:NAME` | `$NAME` / `printenv NAME` |
+| Python | `py -3` 或 `python` | `python3` |
+| venv 解释器 | `.\.venv\Scripts\python.exe` | `.venv/bin/python` |
+| 判断命令是否存在 | `Get-Command` / `where.exe` | `command -v` |
+| 查端口 | `Get-NetTCPConnection -LocalPort <port>` | `ss -ltnp` / `lsof -iTCP:<port>` |
+
+WSL2 按 Linux 命令处理。Windows 和 WSL 的路径、换行符、Docker 启动方式都不同，报告里要写清实际使用的 shell 和解释器。
 
 ## Windows 环境坑（先查再试）
 
