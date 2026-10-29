@@ -8,24 +8,27 @@ A periodic health-check skill for existing full-stack projects. It combines proj
 
 ## Install first
 
-This is a skill package, not a double-click installer. After extracting it, copy the entire `fullstack-health-check/` directory into your host's skills directory.
+This is a **host-neutral** skill package, not tied to Codex, and not a double-click installer. Any host that supports the Agent Skills / `SKILL.md` directory format can use it: extract the archive and copy the entire `fullstack-health-check/` directory into that host's skills directory.
 
-Windows + Codex:
+| Host | Common skills directory |
+|---|---|
+| Codex | `~/.codex/skills/` |
+| Claude Code | `~/.claude/skills/` |
+| Other Agent Skills hosts | The host's configured skills directory; check its documentation |
+
+Windows PowerShell:
 
 ```powershell
-$skills = Join-Path $env:USERPROFILE '.codex\skills'
-New-Item -ItemType Directory -Force -Path $skills | Out-Null
-Copy-Item -LiteralPath '.\fullstack-health-check' -Destination $skills -Recurse -Force
+Copy-Item -LiteralPath '.\fullstack-health-check' -Destination '<HOST_SKILLS_DIR>' -Recurse -Force
 ```
 
-macOS / Linux + Codex:
+macOS / Linux:
 
 ```bash
-mkdir -p ~/.codex/skills
-cp -R ./fullstack-health-check ~/.codex/skills/
+cp -R ./fullstack-health-check "<HOST_SKILLS_DIR>/"
 ```
 
-Claude Code or another Agent Skills host: put the whole directory in that host's skills directory, for example `~/.claude/skills/`. The directory root must contain `SKILL.md`; do not copy only that file. See "Install" below for full details.
+The directory root must contain `SKILL.md`; do not copy only that file. See "Install" below for examples.
 
 ## What it solves
 
@@ -77,38 +80,76 @@ fullstack-health-check/
 | macOS / Linux + Python 3.9+ | Yes | `python3 scripts/verify_package.py` |
 | WSL2 | Yes | `python3 scripts/verify_package.py` or PowerShell 7 |
 | Other Unix-like systems + Python 3.9+ | Yes | `python3 scripts/verify_package.py` |
-| Codex / Claude Code / Agent Skills hosts | Yes | Markdown skill format |
+| Any Agent Skills host (Codex, Claude Code, etc.) | Yes | Plain Markdown skill format |
 
-The core skill is plain Markdown and Git commands, so it is not tied to Windows. The Python verifier uses only the standard library and does not need network access. See `references/platform-commands.md` / `.en.md` for side-by-side Windows, macOS, Linux, and WSL2 commands; Windows-specific traps are isolated in `references/windows-pitfalls.md` / `.en.md`.
+The core skill is plain Markdown and Git commands, so it is not tied to Windows or a specific host. The Python verifier uses only the standard library and does not need network access. See `references/platform-commands.md` / `.en.md` for side-by-side Windows, macOS, Linux, and WSL2 commands; Windows-specific traps are isolated in `references/windows-pitfalls.md` / `.en.md`.
 
 ## Install
 
-### Codex / Agent Skills hosts
+### Generic install: any Agent Skills host
 
-PowerShell (Windows):
+This package does not depend on a Codex-specific format. A host only needs to read `SKILL.md` and allow access to `references/` and `scripts/` in the same directory.
+
+1. Extract the release archive.
+2. Find that host's skills directory.
+3. Copy the entire `fullstack-health-check/` directory into it.
+4. Confirm that `<SKILLS_DIR>/fullstack-health-check/SKILL.md` exists.
+
+| Host | Common skills directory | Notes |
+|---|---|---|
+| Codex | `~/.codex/skills/` | Example, not the only supported host |
+| Claude Code | `~/.claude/skills/` | Example |
+| Other Agent Skills hosts | The host's configured skills directory | Follow the host documentation |
+
+Windows PowerShell:
 
 ```powershell
-$skills = Join-Path $env:USERPROFILE '.codex\skills'
+$source = '.\fullstack-health-check'
+$skills = '<HOST_SKILLS_DIR>'
 New-Item -ItemType Directory -Force -Path $skills | Out-Null
-Copy-Item -LiteralPath '.\fullstack-health-check' -Destination $skills -Recurse -Force
+Copy-Item -LiteralPath $source -Destination $skills -Recurse -Force
+Test-Path (Join-Path $skills 'fullstack-health-check\SKILL.md')
 ```
 
 macOS / Linux:
+
+```bash
+mkdir -p "<HOST_SKILLS_DIR>"
+cp -R ./fullstack-health-check "<HOST_SKILLS_DIR>/"
+test -f "<HOST_SKILLS_DIR>/fullstack-health-check/SKILL.md"
+```
+
+### Example: Codex
 
 ```bash
 mkdir -p ~/.codex/skills
 cp -R ./fullstack-health-check ~/.codex/skills/
 ```
 
-### Claude Code / other skill directories
+On Windows, use `$env:USERPROFILE\.codex\skills` as the destination.
 
-Copy the whole `fullstack-health-check/` directory into the host's skill directory, for example `~/.claude/skills/`. The exact directory name depends on the host.
+### Example: Claude Code
+
+```bash
+mkdir -p ~/.claude/skills
+cp -R ./fullstack-health-check ~/.claude/skills/
+```
+
+On Windows, use `$env:USERPROFILE\.claude\skills` as the destination.
+
+### Other hosts
+
+Put the whole directory in the skills directory configured by that host. Directory names, loading behavior, and whether a restart is required vary by host; follow its documentation. Do not assume every host uses `.codex` or `.claude`.
 
 ### Git clone
 
 ```bash
-git clone https://github.com/Fallen-leaves089/fullstack-health-check.git ~/.codex/skills/fullstack-health-check
+git clone https://github.com/Fallen-leaves089/fullstack-health-check.git "<HOST_SKILLS_DIR>/fullstack-health-check"
 ```
+
+### Manual install
+
+After extracting, copy the entire `fullstack-health-check/` directory into the skills directory. Do not copy only `SKILL.md`; `references/` and `scripts/` must travel with it.
 
 ### Use the English skill body
 

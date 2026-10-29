@@ -8,24 +8,27 @@
 
 ## 先安装
 
-这是一个 Skill 包，不是双击安装的软件。解压后，把整个 `fullstack-health-check/` 目录复制到宿主的技能目录。
+这是一个通用 Skill 包，**不绑定 Codex**，也不是双击安装的软件。只要宿主支持 Agent Skills / `SKILL.md` 目录格式，就可以安装：解压后把整个 `fullstack-health-check/` 目录复制到该宿主的技能目录。
 
-Windows + Codex：
+| 宿主 | 常见技能目录 |
+|---|---|
+| Codex | `~/.codex/skills/` |
+| Claude Code | `~/.claude/skills/` |
+| 其他 Agent Skills 宿主 | 宿主配置的技能目录，以宿主文档为准 |
+
+Windows PowerShell：
 
 ```powershell
-$skills = Join-Path $env:USERPROFILE '.codex\skills'
-New-Item -ItemType Directory -Force -Path $skills | Out-Null
-Copy-Item -LiteralPath '.\fullstack-health-check' -Destination $skills -Recurse -Force
+Copy-Item -LiteralPath '.\fullstack-health-check' -Destination '<宿主技能目录>' -Recurse -Force
 ```
 
-macOS / Linux + Codex：
+macOS / Linux：
 
 ```bash
-mkdir -p ~/.codex/skills
-cp -R ./fullstack-health-check ~/.codex/skills/
+cp -R ./fullstack-health-check "<宿主技能目录>/"
 ```
 
-Claude Code 或其他 Agent Skills 宿主：把整个目录放进对应技能目录，例如 `~/.claude/skills/`。装好后目录根部必须有 `SKILL.md`，不要只复制这一个文件。完整说明见下方「安装」。
+装好后目录根部必须有 `SKILL.md`，不能只复制这一个文件。具体示例见下方「安装」。
 
 ## 它解决什么问题
 
@@ -77,34 +80,72 @@ fullstack-health-check/
 | macOS / Linux + Python 3.9+ | 支持 | `python3 scripts/verify_package.py` |
 | WSL2 | 支持 | `python3 scripts/verify_package.py` 或 PowerShell 7 |
 | 其他类 Unix 系统 + Python 3.9+ | 支持 | `python3 scripts/verify_package.py` |
-| Codex / Claude Code / Agent Skills 宿主 | 支持 | 纯 Markdown 技能格式 |
+| 任意 Agent Skills 宿主（Codex、Claude Code 等） | 支持 | 纯 Markdown 技能格式 |
 
-核心技能只依赖 Markdown 和 Git 命令，不绑定 Windows；Python 自检只用标准库，不需要联网安装依赖。常见操作的三平台写法见 `references/platform-commands.md` / `.en.md`；Windows 专用坑集中在 `references/windows-pitfalls.md` / `.en.md`，其他平台可以跳过。
+核心技能只依赖 Markdown 和 Git 命令，不绑定 Windows，也不绑定某个特定宿主；Python 自检只用标准库，不需要联网安装依赖。常见操作的三平台写法见 `references/platform-commands.md` / `.en.md`；Windows 专用坑集中在 `references/windows-pitfalls.md` / `.en.md`，其他平台可以跳过。
 
 ## 安装
 
-### Codex / 兼容 Agent Skills 的宿主
+### 通用安装：任意 Agent Skills 宿主
 
-PowerShell（Windows）：
+本包不依赖 Codex 专有格式。宿主只要读取 `SKILL.md`，并能访问同目录的 `references/` 和 `scripts/`，就可以使用。
+
+1. 解压发布包。
+2. 确认该宿主的技能目录。
+3. 把整个 `fullstack-health-check/` 目录复制进去。
+4. 确认 `<技能目录>/fullstack-health-check/SKILL.md` 存在。
+
+| 宿主 | 常见技能目录 | 说明 |
+|---|---|---|
+| Codex | `~/.codex/skills/` | 示例，不是唯一支持宿主 |
+| Claude Code | `~/.claude/skills/` | 示例 |
+| 其他 Agent Skills 宿主 | 宿主配置的技能目录 | 以宿主文档为准 |
+
+Windows PowerShell：
 
 ```powershell
-$skills = Join-Path $env:USERPROFILE '.codex\skills'
+$source = '.\fullstack-health-check'
+$skills = '<宿主技能目录>'
 New-Item -ItemType Directory -Force -Path $skills | Out-Null
-Copy-Item -LiteralPath '.\fullstack-health-check' -Destination $skills -Recurse -Force
+Copy-Item -LiteralPath $source -Destination $skills -Recurse -Force
+Test-Path (Join-Path $skills 'fullstack-health-check\SKILL.md')
 ```
 
-装完后技能目录应包含 `SKILL.md`。
-
 macOS / Linux：
+
+```bash
+mkdir -p "<宿主技能目录>"
+cp -R ./fullstack-health-check "<宿主技能目录>/"
+test -f "<宿主技能目录>/fullstack-health-check/SKILL.md"
+```
+
+### 示例：Codex
 
 ```bash
 mkdir -p ~/.codex/skills
 cp -R ./fullstack-health-check ~/.codex/skills/
 ```
 
-### Claude Code 或其他技能目录
+Windows 下把目标改成 `$env:USERPROFILE\.codex\skills`。
 
-把整个 `fullstack-health-check/` 目录放进宿主的技能目录即可，例如 `~/.claude/skills/`。不同宿主的目录名不同，以宿主文档为准。
+### 示例：Claude Code
+
+```bash
+mkdir -p ~/.claude/skills
+cp -R ./fullstack-health-check ~/.claude/skills/
+```
+
+Windows 下把目标改成 `$env:USERPROFILE\.claude\skills`。
+
+### 其他宿主
+
+把整个目录放进宿主配置的技能目录即可。不同宿主的目录名、加载方式和是否需要重启都不同，以宿主文档为准；不要假设所有宿主都使用 `.codex` 或 `.claude`。
+
+### Git clone
+
+```bash
+git clone https://github.com/Fallen-leaves089/fullstack-health-check.git "<宿主技能目录>/fullstack-health-check"
+```
 
 ### 手动安装
 
