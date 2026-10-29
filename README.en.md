@@ -4,6 +4,8 @@
 
 A periodic health-check skill for existing full-stack projects. It combines project-specific history, a two-axis review (standards vs. spec), and real build/container regressions, then produces a P0-P3 findings report with evidence locations.
 
+> **License**: PolyForm Noncommercial License 1.0.0. Noncommercial use only by default; commercial use requires a written license from the author. Contact `chenshuidelaye@qq.com` to discuss terms. See [COMMERCIAL.en.md](COMMERCIAL.en.md).
+
 > Read-only by default. Report first; do not change code without an explicit instruction.
 
 ## Install first

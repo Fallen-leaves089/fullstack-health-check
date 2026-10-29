@@ -9,6 +9,8 @@ license: PolyForm-Noncommercial-1.0.0
 
 [中文](SKILL.md) | [English](SKILL.en.md)
 
+> **许可 / License**：PolyForm Noncommercial License 1.0.0。默认仅限非商业用途；商业使用需取得作者书面授权，可联系 `chenshuidelaye@qq.com` 协商。详见 [COMMERCIAL.md](COMMERCIAL.md)。
+
 给一个已有项目做周期性体检，产出**分级、带证据位置、可勾选**的问题清单。适用于 Web 前后端、移动端、数据库迁移、容器化部署等多层项目。
 
 > 核心流程与平台无关。三平台命令对照见 `references/platform-commands.md`；Windows 专用命令和坑单独放在 `references/windows-pitfalls.md`，macOS、Linux 和 WSL2 可以跳过 Windows 小节。

@@ -4,6 +4,8 @@
 
 一个面向已有项目的全栈体检技能包：先查项目自己的历史归档，再做「规范 / 规格」双轴审查，最后跑真实构建、数据库迁移和容器化回归，输出 P0-P3 分级问题清单。
 
+> **许可 / License**：PolyForm Noncommercial License 1.0.0。默认仅限非商业用途；商业使用需取得作者书面授权，可联系 `chenshuidelaye@qq.com` 协商。详见 [COMMERCIAL.md](COMMERCIAL.md)。
+
 > 检查阶段默认只读。发现问题先报告，不擅自改代码。
 
 ## 先安装

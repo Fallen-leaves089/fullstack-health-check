@@ -9,6 +9,8 @@ license: PolyForm-Noncommercial-1.0.0
 
 [中文](SKILL.md) | [English](SKILL.en.md)
 
+> **License**: PolyForm Noncommercial License 1.0.0. Noncommercial use only by default; commercial use requires a written license from the author. Contact `chenshuidelaye@qq.com` to discuss terms. See [COMMERCIAL.en.md](COMMERCIAL.en.md).
+
 > This is the English mirror. The default `SKILL.md` is Chinese; to use this version, copy it over `SKILL.md` in your skill directory.
 
 Run a periodic health check on an existing project and produce a **graded, evidence-linked, checkable** findings report. It works for web frontends/backends, mobile apps, database migrations, containerized deployments, and other multi-layer projects.
