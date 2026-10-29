@@ -3,3 +3,4 @@
 *.bat text eol=crlf
 *.zip binary
 .mailmap export-ignore
+CONTRIBUTORS.md export-ignore
