@@ -1,17 +1,17 @@
 ---
-name: fullstack-health-check
-description: 全栈项目的周期性体检。组合项目既有归档、外部规范双轴审查、真实构建与容器化回归，输出 P0-P3 分级问题清单。用户说「做个全栈检查」「全面问题检查」「上线前体检」时使用。
-version: 1.1.2
+name: project-health
+description: 面向已有软件项目的证据驱动健康检查：先查项目历史，再做规范/规格双轴审查、真实构建/迁移/容器回归，并约束验证方法、平台差异、安全与脱敏边界，最终输出带证据位置的 P0-P3 问题清单。用于周期性体检、上线前审计、项目交接和全面问题检查。
+version: 1.2.0
 license: PolyForm-Noncommercial-1.0.0
 ---
 
-# 全栈健康检查
+# 项目健康检查
 
 [中文](SKILL.md) | [English](SKILL.en.md)
 
 > **许可 / License**：PolyForm Noncommercial License 1.0.0。默认仅限非商业用途；商业使用需取得作者书面授权，可联系 `chenshuidelaye@qq.com` 协商。详见 [COMMERCIAL.md](COMMERCIAL.md)。
 
-给一个已有项目做周期性体检，产出**分级、带证据位置、可勾选**的问题清单。适用于 Web 前后端、移动端、数据库迁移、容器化部署等多层项目。
+给一个已有软件项目做周期性体检，产出**分级、带证据位置、可勾选**的问题清单。适用于服务、Web / 移动客户端、数据库迁移、容器化部署等多层项目；全栈只是其中一种常见场景，不是技能边界。流程同时覆盖验证纪律、平台命令差异、安全底线、脱敏与修复边界。
 
 > 核心流程与平台无关。三平台命令对照见 `references/platform-commands.md`；Windows 专用命令和坑单独放在 `references/windows-pitfalls.md`，macOS、Linux 和 WSL2 可以跳过 Windows 小节。
 

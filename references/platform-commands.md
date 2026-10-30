@@ -139,8 +139,8 @@ fi
 | 操作 | Windows PowerShell 5.1 / 7 | macOS | Linux |
 |---|---|---|---|
 | 核对公钥指纹 | `ssh-keygen -lf release-signing-key.pub` | 同左 | 同左 |
-| 校验文件哈希 | `Get-FileHash -LiteralPath .\fullstack-health-check-<version>.zip -Algorithm SHA256` | `shasum -a 256 fullstack-health-check-<version>.zip` | `sha256sum fullstack-health-check-<version>.zip` |
-| 验证签名 | `cmd /c "ssh-keygen.exe -Y verify -f allowed_signers -I fullstack-health-check-release -n file -s SHA256SUMS.sig < SHA256SUMS"` | `ssh-keygen -Y verify -f allowed_signers -I fullstack-health-check-release -n file -s SHA256SUMS.sig < SHA256SUMS` | 同左 |
+| 校验文件哈希 | `Get-FileHash -LiteralPath .\project-health-<version>.zip -Algorithm SHA256` | `shasum -a 256 project-health-<version>.zip` | `sha256sum project-health-<version>.zip` |
+| 验证签名 | `cmd /c "ssh-keygen.exe -Y verify -f allowed_signers -I project-health-release -n file -s SHA256SUMS.sig < SHA256SUMS"` | `ssh-keygen -Y verify -f allowed_signers -I project-health-release -n file -s SHA256SUMS.sig < SHA256SUMS` | 同左 |
 
 PowerShell 5.1 不支持 `<` 输入重定向，所以 Windows 用 `cmd /c` 只负责把 `SHA256SUMS` 送给 `ssh-keygen`；不要改成 `Get-Content | ssh-keygen`，管道编码可能改变被验证的字节。完整说明见 `SIGNING.md`。
 

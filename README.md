@@ -1,8 +1,8 @@
-# fullstack-health-check
+# project-health
 
 [中文](README.md) | [English](README.en.md)
 
-一个面向已有项目的全栈体检技能包：先查项目自己的历史归档，再做「规范 / 规格」双轴审查，最后跑真实构建、数据库迁移和容器化回归，输出 P0-P3 分级问题清单。
+一个面向已有软件项目的证据驱动体检技能包：先查项目自己的历史归档，再做「规范 / 规格」双轴审查，最后跑真实构建、数据库迁移、容器化回归和关键路径验证，输出 P0-P3 分级问题清单。适用于服务、Web / 移动客户端、数据库、容器与部署等不同形态的项目；全栈只是其中一种常见场景。
 
 > **许可 / License**：PolyForm Noncommercial License 1.0.0。默认仅限非商业用途；商业使用需取得作者书面授权，可联系 `chenshuidelaye@qq.com` 协商。详见 [COMMERCIAL.md](COMMERCIAL.md)。
 
@@ -10,7 +10,7 @@
 
 ## 先安装
 
-这是一个通用 Skill 包，**不绑定 Codex**，也不是双击安装的软件。只要宿主支持 Agent Skills / `SKILL.md` 目录格式，就可以安装：解压后把整个 `fullstack-health-check/` 目录复制到该宿主的技能目录。
+这是一个通用 Skill 包，**不绑定 Codex**，也不是双击安装的软件。只要宿主支持 Agent Skills / `SKILL.md` 目录格式，就可以安装：解压后把整个 `project-health/` 目录复制到该宿主的技能目录。
 
 | 宿主 | 常见技能目录 |
 |---|---|
@@ -21,20 +21,22 @@
 Windows PowerShell：
 
 ```powershell
-Copy-Item -LiteralPath '.\fullstack-health-check' -Destination '<宿主技能目录>' -Recurse -Force
+Copy-Item -LiteralPath '.\project-health' -Destination '<宿主技能目录>' -Recurse -Force
 ```
 
 macOS / Linux：
 
 ```bash
-cp -R ./fullstack-health-check "<宿主技能目录>/"
+cp -R ./project-health "<宿主技能目录>/"
 ```
 
 装好后目录根部必须有 `SKILL.md`，不能只复制这一个文件。具体示例见下方「安装」。
 
+> **从 1.1.x 升级**：本项目已更名为 `project-health`。请先删除旧的 `fullstack-health-check` 技能目录，再安装新目录，避免两个技能同时存在。
+
 ## 它解决什么问题
 
-很多“全栈检查”最后变成两件事：读一遍代码，然后列一堆正确的废话。这个技能包强制做三件事：
+很多“项目检查”最后变成两件事：读一遍代码，然后列一堆正确的废话。这个技能包强制做三件事：
 
 1. **先查项目自己的历史**：上一轮遗留、构建基线、环境坑、用户禁区，比通用清单更值钱。
 2. **双轴审查**：规范符合度（Standards）和需求符合度（Spec）分开看，避免把“代码写得丑”和“需求没做完”混成一锅。
@@ -42,10 +44,12 @@ cp -R ./fullstack-health-check "<宿主技能目录>/"
 
 输出不是“建议关注”，而是带 `file:line` 证据、影响、建议和验证方式的分级清单。
 
+它还会检查“检查方法本身是否有效”，并约束跨平台命令差异、安全底线、脱敏和修复边界；目标不是多列几条意见，而是让结论可复现、可追溯。
+
 ## 包内结构
 
 ```text
-fullstack-health-check/
+project-health/
 ├── SKILL.md / SKILL.en.md                # 技能本体（中文默认 / 英文镜像）
 ├── README.md / README.en.md              # 本文件
 ├── LICENSE                               # PolyForm Noncommercial 1.0.0 英文原文
@@ -94,8 +98,8 @@ fullstack-health-check/
 
 1. 解压发布包。
 2. 确认该宿主的技能目录。
-3. 把整个 `fullstack-health-check/` 目录复制进去。
-4. 确认 `<技能目录>/fullstack-health-check/SKILL.md` 存在。
+3. 把整个 `project-health/` 目录复制进去。
+4. 确认 `<技能目录>/project-health/SKILL.md` 存在。
 
 | 宿主 | 常见技能目录 | 说明 |
 |---|---|---|
@@ -106,26 +110,26 @@ fullstack-health-check/
 Windows PowerShell：
 
 ```powershell
-$source = '.\fullstack-health-check'
+$source = '.\project-health'
 $skills = '<宿主技能目录>'
 New-Item -ItemType Directory -Force -Path $skills | Out-Null
 Copy-Item -LiteralPath $source -Destination $skills -Recurse -Force
-Test-Path (Join-Path $skills 'fullstack-health-check\SKILL.md')
+Test-Path (Join-Path $skills 'project-health\SKILL.md')
 ```
 
 macOS / Linux：
 
 ```bash
 mkdir -p "<宿主技能目录>"
-cp -R ./fullstack-health-check "<宿主技能目录>/"
-test -f "<宿主技能目录>/fullstack-health-check/SKILL.md"
+cp -R ./project-health "<宿主技能目录>/"
+test -f "<宿主技能目录>/project-health/SKILL.md"
 ```
 
 ### 示例：Codex
 
 ```bash
 mkdir -p ~/.codex/skills
-cp -R ./fullstack-health-check ~/.codex/skills/
+cp -R ./project-health ~/.codex/skills/
 ```
 
 Windows 下把目标改成 `$env:USERPROFILE\.codex\skills`。
@@ -134,7 +138,7 @@ Windows 下把目标改成 `$env:USERPROFILE\.codex\skills`。
 
 ```bash
 mkdir -p ~/.claude/skills
-cp -R ./fullstack-health-check ~/.claude/skills/
+cp -R ./project-health ~/.claude/skills/
 ```
 
 Windows 下把目标改成 `$env:USERPROFILE\.claude\skills`。
@@ -146,12 +150,12 @@ Windows 下把目标改成 `$env:USERPROFILE\.claude\skills`。
 ### Git clone
 
 ```bash
-git clone https://github.com/Fallen-leaves089/fullstack-health-check.git "<宿主技能目录>/fullstack-health-check"
+git clone https://github.com/Fallen-leaves089/project-health.git "<宿主技能目录>/project-health"
 ```
 
 ### 手动安装
 
-解压后把 `fullstack-health-check/` 整个目录复制到技能目录，不要只复制 `SKILL.md`——`references/` 和 `scripts/` 也要一起带走。
+解压后把 `project-health/` 整个目录复制到技能目录，不要只复制 `SKILL.md`——`references/` 和 `scripts/` 也要一起带走。
 
 ### 使用英文技能本体
 
@@ -165,9 +169,9 @@ cp SKILL.en.md SKILL.md
 
 ## 下载与签名
 
-正式下载请从 [GitHub Releases](https://github.com/Fallen-leaves089/fullstack-health-check/releases) 获取，并同时下载：
+正式下载请从 [GitHub Releases](https://github.com/Fallen-leaves089/project-health/releases) 获取，并同时下载：
 
-- `fullstack-health-check-<version>.zip`
+- `project-health-<version>.zip`
 - `SHA256SUMS`
 - `SHA256SUMS.sig`
 - `allowed_signers`
@@ -183,27 +187,27 @@ macOS 自带 `shasum`：
 
 ```bash
 shasum -a 256 -c SHA256SUMS
-ssh-keygen -Y verify -f allowed_signers -I fullstack-health-check-release -n file -s SHA256SUMS.sig < SHA256SUMS
+ssh-keygen -Y verify -f allowed_signers -I project-health-release -n file -s SHA256SUMS.sig < SHA256SUMS
 ```
 
 Linux（GNU coreutils）：
 
 ```bash
 sha256sum -c SHA256SUMS
-ssh-keygen -Y verify -f allowed_signers -I fullstack-health-check-release -n file -s SHA256SUMS.sig < SHA256SUMS
+ssh-keygen -Y verify -f allowed_signers -I project-health-release -n file -s SHA256SUMS.sig < SHA256SUMS
 ```
 
 Windows PowerShell 5.1 / 7：
 
 ```powershell
-$zip = '.\fullstack-health-check-<version>.zip'
+$zip = '.\project-health-<version>.zip'
 $line = Get-Content .\SHA256SUMS | Where-Object { $_ -match [regex]::Escape([IO.Path]::GetFileName($zip)) } | Select-Object -First 1
 if (-not $line) { throw 'Checksum entry not found' }
 $expected = ($line -split '\s+')[0].ToLowerInvariant()
 $actual = (Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLowerInvariant()
 if ($actual -ne $expected) { throw 'SHA256 mismatch' }
 
-cmd /c "ssh-keygen.exe -Y verify -f allowed_signers -I fullstack-health-check-release -n file -s SHA256SUMS.sig < SHA256SUMS"
+cmd /c "ssh-keygen.exe -Y verify -f allowed_signers -I project-health-release -n file -s SHA256SUMS.sig < SHA256SUMS"
 if ($LASTEXITCODE -ne 0) { throw 'Signature verification failed' }
 ```
 
@@ -213,12 +217,13 @@ if ($LASTEXITCODE -ne 0) { throw 'Signature verification failed' }
 
 对话里说这些会命中：
 
-- 「做个全栈检查」
+- 「做个项目体检」
 - 「全面问题检查」
-- 「上线前体检」
-- 「检查全栈项目」
+- 「上线前审计」或「上线前体检」
+- 「项目交接前检查」
+- 「检查这个软件项目」或「检查全栈项目」
 
-也可以直接说「用 fullstack-health-check 检查这个仓库」。
+也可以直接说「用 project-health 检查这个仓库」。
 
 ## 使用前提
 
@@ -292,6 +297,6 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\check-redaction.ps
 
 ## 版本
 
-- 版本：1.1.2
+- 版本：1.2.0
 - 对应内部整理日期：2026-09-04
-- 公开发布整理：2026-10-29
+- 公开发布整理：2026-10-30

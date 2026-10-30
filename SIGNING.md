@@ -8,7 +8,7 @@
 
 从 GitHub Releases 下载时，请同时下载：
 
-- `fullstack-health-check-<version>.zip`：技能包
+- `project-health-<version>.zip`：技能包
 - `SHA256SUMS`：zip 的 SHA256 校验和
 - `SHA256SUMS.sig`：`SHA256SUMS` 的 OpenSSH 签名
 - `allowed_signers`：允许的签名身份和公钥
@@ -20,7 +20,7 @@
 
 ## 签名身份
 
-- Principal：`fullstack-health-check-release`
+- Principal：`project-health-release`
 - 算法：Ed25519
 - 公钥指纹：`SHA256:DBDrYR50w0G+UuqtNAIgKZsXX4AjZAh3nvv0/zMCN8M`
 - 公钥文件：`release-signing-key.pub`
@@ -38,7 +38,7 @@ macOS 通常自带 `shasum`，但不一定有 `sha256sum`。在下载目录运�
 ```bash
 shasum -a 256 -c SHA256SUMS
 ssh-keygen -Y verify -f allowed_signers \
-  -I fullstack-health-check-release \
+  -I project-health-release \
   -n file -s SHA256SUMS.sig < SHA256SUMS
 ```
 
@@ -49,7 +49,7 @@ GNU coreutils 发行版通常使用 `sha256sum`。在下载目录运行：
 ```bash
 sha256sum -c SHA256SUMS
 ssh-keygen -Y verify -f allowed_signers \
-  -I fullstack-health-check-release \
+  -I project-health-release \
   -n file -s SHA256SUMS.sig < SHA256SUMS
 ```
 
@@ -60,12 +60,12 @@ ssh-keygen -Y verify -f allowed_signers \
 Windows 内置 OpenSSH 通常已经包含 `ssh-keygen.exe`。在下载目录运行：
 
 ```powershell
-$zip = '.\fullstack-health-check-<version>.zip'
+$zip = '.\project-health-<version>.zip'
 $expected = ((Get-Content .\SHA256SUMS | Where-Object { $_ -match [regex]::Escape([IO.Path]::GetFileName($zip)) } | Select-Object -First 1) -split '\s+')[0].ToLowerInvariant()
 $actual = (Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLowerInvariant()
 if ($actual -ne $expected) { throw 'SHA256 mismatch' }
 
-cmd /c "ssh-keygen.exe -Y verify -f allowed_signers -I fullstack-health-check-release -n file -s SHA256SUMS.sig < SHA256SUMS"
+cmd /c "ssh-keygen.exe -Y verify -f allowed_signers -I project-health-release -n file -s SHA256SUMS.sig < SHA256SUMS"
 if ($LASTEXITCODE -ne 0) { throw 'Signature verification failed' }
 ```
 
@@ -78,19 +78,19 @@ PowerShell 5.1 不直接支持 `<` 输入重定向，所以这里用 `cmd /c` �
 Windows PowerShell：
 
 ```powershell
-Get-FileHash -LiteralPath .\fullstack-health-check-<version>.zip -Algorithm SHA256
+Get-FileHash -LiteralPath .\project-health-<version>.zip -Algorithm SHA256
 ```
 
 macOS：
 
 ```bash
-shasum -a 256 fullstack-health-check-<version>.zip
+shasum -a 256 project-health-<version>.zip
 ```
 
 Linux：
 
 ```bash
-sha256sum fullstack-health-check-<version>.zip
+sha256sum project-health-<version>.zip
 ```
 
 哈希匹配只能说明文件在下载过程中没有损坏，不能证明发布者身份；身份验证需要 `SHA256SUMS.sig`。

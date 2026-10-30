@@ -139,8 +139,8 @@ Put the zip, `SHA256SUMS`, `SHA256SUMS.sig`, and `allowed_signers` in the same d
 | Operation | Windows PowerShell 5.1 / 7 | macOS | Linux |
 |---|---|---|---|
 | Check the public-key fingerprint | `ssh-keygen -lf release-signing-key.pub` | Same | Same |
-| Check the archive hash | `Get-FileHash -LiteralPath .\fullstack-health-check-<version>.zip -Algorithm SHA256` | `shasum -a 256 fullstack-health-check-<version>.zip` | `sha256sum fullstack-health-check-<version>.zip` |
-| Verify the signature | `cmd /c "ssh-keygen.exe -Y verify -f allowed_signers -I fullstack-health-check-release -n file -s SHA256SUMS.sig < SHA256SUMS"` | `ssh-keygen -Y verify -f allowed_signers -I fullstack-health-check-release -n file -s SHA256SUMS.sig < SHA256SUMS` | Same as macOS |
+| Check the archive hash | `Get-FileHash -LiteralPath .\project-health-<version>.zip -Algorithm SHA256` | `shasum -a 256 project-health-<version>.zip` | `sha256sum project-health-<version>.zip` |
+| Verify the signature | `cmd /c "ssh-keygen.exe -Y verify -f allowed_signers -I project-health-release -n file -s SHA256SUMS.sig < SHA256SUMS"` | `ssh-keygen -Y verify -f allowed_signers -I project-health-release -n file -s SHA256SUMS.sig < SHA256SUMS` | Same as macOS |
 
 Windows PowerShell 5.1 does not support `<` input redirection, so Windows uses `cmd /c` only to feed `SHA256SUMS` to `ssh-keygen`. Do not replace it with `Get-Content | ssh-keygen`; pipeline encoding can change the bytes being verified. See `SIGNING.en.md` for the complete instructions.
 

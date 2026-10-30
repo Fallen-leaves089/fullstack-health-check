@@ -188,7 +188,7 @@ def _check_language_links(root: Path) -> List[str]:
 
 def _check_frontmatter(root: Path) -> List[str]:
     failures: List[str] = []
-    expected_name = "fullstack-health-check"
+    expected_name = "project-health"
     expected_license = "PolyForm-Noncommercial-1.0.0"
     versions: Dict[str, str] = {}
 

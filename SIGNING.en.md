@@ -8,7 +8,7 @@ Release artifacts use **OpenSSH Ed25519** signatures. Windows 10/11, macOS, and 
 
 When downloading from GitHub Releases, get all of these:
 
-- `fullstack-health-check-<version>.zip`: the skill package
+- `project-health-<version>.zip`: the skill package
 - `SHA256SUMS`: the zip checksum
 - `SHA256SUMS.sig`: the OpenSSH signature over `SHA256SUMS`
 - `allowed_signers`: the permitted signing identity and public key
@@ -20,7 +20,7 @@ Both the repository and the Release provide `release-signing-key.pub`.
 
 ## Signing identity
 
-- Principal: `fullstack-health-check-release`
+- Principal: `project-health-release`
 - Algorithm: Ed25519
 - Public key fingerprint: `SHA256:DBDrYR50w0G+UuqtNAIgKZsXX4AjZAh3nvv0/zMCN8M`
 - Public key file: `release-signing-key.pub`
@@ -38,7 +38,7 @@ macOS normally bundles `shasum` but does not always provide `sha256sum`. From th
 ```bash
 shasum -a 256 -c SHA256SUMS
 ssh-keygen -Y verify -f allowed_signers \
-  -I fullstack-health-check-release \
+  -I project-health-release \
   -n file -s SHA256SUMS.sig < SHA256SUMS
 ```
 
@@ -49,7 +49,7 @@ GNU coreutils distributions normally provide `sha256sum`. From the download dire
 ```bash
 sha256sum -c SHA256SUMS
 ssh-keygen -Y verify -f allowed_signers \
-  -I fullstack-health-check-release \
+  -I project-health-release \
   -n file -s SHA256SUMS.sig < SHA256SUMS
 ```
 
@@ -60,12 +60,12 @@ On macOS or Linux, both commands must succeed. A successful signature check alon
 Windows OpenSSH normally includes `ssh-keygen.exe`. From the download directory:
 
 ```powershell
-$zip = '.\fullstack-health-check-<version>.zip'
+$zip = '.\project-health-<version>.zip'
 $expected = ((Get-Content .\SHA256SUMS | Where-Object { $_ -match [regex]::Escape([IO.Path]::GetFileName($zip)) } | Select-Object -First 1) -split '\s+')[0].ToLowerInvariant()
 $actual = (Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLowerInvariant()
 if ($actual -ne $expected) { throw 'SHA256 mismatch' }
 
-cmd /c "ssh-keygen.exe -Y verify -f allowed_signers -I fullstack-health-check-release -n file -s SHA256SUMS.sig < SHA256SUMS"
+cmd /c "ssh-keygen.exe -Y verify -f allowed_signers -I project-health-release -n file -s SHA256SUMS.sig < SHA256SUMS"
 if ($LASTEXITCODE -ne 0) { throw 'Signature verification failed' }
 ```
 
@@ -78,19 +78,19 @@ If the public key is not available yet, at least compare the hash.
 Windows PowerShell:
 
 ```powershell
-Get-FileHash -LiteralPath .\fullstack-health-check-<version>.zip -Algorithm SHA256
+Get-FileHash -LiteralPath .\project-health-<version>.zip -Algorithm SHA256
 ```
 
 macOS:
 
 ```bash
-shasum -a 256 fullstack-health-check-<version>.zip
+shasum -a 256 project-health-<version>.zip
 ```
 
 Linux:
 
 ```bash
-sha256sum fullstack-health-check-<version>.zip
+sha256sum project-health-<version>.zip
 ```
 
 A matching hash proves only that the download was not corrupted. It does not prove the publisher's identity; identity verification requires `SHA256SUMS.sig`.

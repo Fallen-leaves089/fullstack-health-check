@@ -2,7 +2,7 @@
 
 [中文](verification-playbook.md) | **English**
 
-This playbook addresses a common failure: **"the command finished" does not mean "the problem was proven"**. The most dangerous conclusion in a full-stack check is not "I found no problem"; it is "I used a check that proves nothing and concluded there is no problem".
+This playbook addresses a common failure: **"the command finished" does not mean "the problem was proven"**. The most dangerous conclusion in a project health check is not "I found no problem"; it is "I used a check that proves nothing and concluded there is no problem".
 
 ## 1. Build a feedback loop that can turn red first
 

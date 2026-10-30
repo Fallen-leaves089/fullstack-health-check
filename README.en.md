@@ -1,8 +1,8 @@
-# fullstack-health-check
+# project-health
 
 [中文](README.md) | [English](README.en.md)
 
-A periodic health-check skill for existing full-stack projects. It combines project-specific history, a two-axis review (standards vs. spec), and real build/container regressions, then produces a P0-P3 findings report with evidence locations.
+A periodic, evidence-driven health-check skill for existing software projects. It combines project-specific history, a two-axis review (standards vs. spec), real build/migration/container regressions, and key-path verification, then produces a P0-P3 findings report with evidence locations. It applies to services, web and mobile clients, databases, containers, and deployment; full-stack is one common case, not the boundary.
 
 > **License**: PolyForm Noncommercial License 1.0.0. Noncommercial use only by default; commercial use requires a written license from the author. Contact `chenshuidelaye@qq.com` to discuss terms. See [COMMERCIAL.en.md](COMMERCIAL.en.md).
 
@@ -10,7 +10,7 @@ A periodic health-check skill for existing full-stack projects. It combines proj
 
 ## Install first
 
-This is a **host-neutral** skill package, not tied to Codex, and not a double-click installer. Any host that supports the Agent Skills / `SKILL.md` directory format can use it: extract the archive and copy the entire `fullstack-health-check/` directory into that host's skills directory.
+This is a **host-neutral** skill package, not tied to Codex, and not a double-click installer. Any host that supports the Agent Skills / `SKILL.md` directory format can use it: extract the archive and copy the entire `project-health/` directory into that host's skills directory.
 
 | Host | Common skills directory |
 |---|---|
@@ -21,20 +21,22 @@ This is a **host-neutral** skill package, not tied to Codex, and not a double-cl
 Windows PowerShell:
 
 ```powershell
-Copy-Item -LiteralPath '.\fullstack-health-check' -Destination '<HOST_SKILLS_DIR>' -Recurse -Force
+Copy-Item -LiteralPath '.\project-health' -Destination '<HOST_SKILLS_DIR>' -Recurse -Force
 ```
 
 macOS / Linux:
 
 ```bash
-cp -R ./fullstack-health-check "<HOST_SKILLS_DIR>/"
+cp -R ./project-health "<HOST_SKILLS_DIR>/"
 ```
 
 The directory root must contain `SKILL.md`; do not copy only that file. See "Install" below for examples.
 
+> **Upgrading from 1.1.x**: this project is now named `project-health`. Remove the old `fullstack-health-check` skill directory before installing the new one so both versions do not coexist.
+
 ## What it solves
 
-Many "full-stack checks" turn into two things: reading some code, then listing generic advice. This skill enforces three things instead:
+Many "project checks" turn into two things: reading some code, then listing generic advice. This skill enforces three things instead:
 
 1. **Read the project's own history first** — previous findings, build baselines, environment traps, and user prohibitions are more valuable than a generic checklist.
 2. **Two-axis review** — standards compliance and spec compliance are reviewed separately, so "ugly code" and "missing requirement" do not get mixed into one bucket.
@@ -42,10 +44,12 @@ Many "full-stack checks" turn into two things: reading some code, then listing g
 
 The output is not "please pay attention"; it is a graded list with `file:line` evidence, impact, recommendation, and verification method.
 
+It also checks whether the verification method itself is valid, and sets boundaries for platform differences, security, redaction, and repair. The goal is not a longer list of opinions; it is reproducible, traceable conclusions.
+
 ## What's inside
 
 ```text
-fullstack-health-check/
+project-health/
 ├── SKILL.md / SKILL.en.md                # skill body (Chinese default / English mirror)
 ├── README.md / README.en.md              # this file
 ├── LICENSE                               # PolyForm Noncommercial 1.0.0 (English original)
@@ -94,8 +98,8 @@ This package does not depend on a Codex-specific format. A host only needs to re
 
 1. Extract the release archive.
 2. Find that host's skills directory.
-3. Copy the entire `fullstack-health-check/` directory into it.
-4. Confirm that `<SKILLS_DIR>/fullstack-health-check/SKILL.md` exists.
+3. Copy the entire `project-health/` directory into it.
+4. Confirm that `<SKILLS_DIR>/project-health/SKILL.md` exists.
 
 | Host | Common skills directory | Notes |
 |---|---|---|
@@ -106,26 +110,26 @@ This package does not depend on a Codex-specific format. A host only needs to re
 Windows PowerShell:
 
 ```powershell
-$source = '.\fullstack-health-check'
+$source = '.\project-health'
 $skills = '<HOST_SKILLS_DIR>'
 New-Item -ItemType Directory -Force -Path $skills | Out-Null
 Copy-Item -LiteralPath $source -Destination $skills -Recurse -Force
-Test-Path (Join-Path $skills 'fullstack-health-check\SKILL.md')
+Test-Path (Join-Path $skills 'project-health\SKILL.md')
 ```
 
 macOS / Linux:
 
 ```bash
 mkdir -p "<HOST_SKILLS_DIR>"
-cp -R ./fullstack-health-check "<HOST_SKILLS_DIR>/"
-test -f "<HOST_SKILLS_DIR>/fullstack-health-check/SKILL.md"
+cp -R ./project-health "<HOST_SKILLS_DIR>/"
+test -f "<HOST_SKILLS_DIR>/project-health/SKILL.md"
 ```
 
 ### Example: Codex
 
 ```bash
 mkdir -p ~/.codex/skills
-cp -R ./fullstack-health-check ~/.codex/skills/
+cp -R ./project-health ~/.codex/skills/
 ```
 
 On Windows, use `$env:USERPROFILE\.codex\skills` as the destination.
@@ -134,7 +138,7 @@ On Windows, use `$env:USERPROFILE\.codex\skills` as the destination.
 
 ```bash
 mkdir -p ~/.claude/skills
-cp -R ./fullstack-health-check ~/.claude/skills/
+cp -R ./project-health ~/.claude/skills/
 ```
 
 On Windows, use `$env:USERPROFILE\.claude\skills` as the destination.
@@ -146,12 +150,12 @@ Put the whole directory in the skills directory configured by that host. Directo
 ### Git clone
 
 ```bash
-git clone https://github.com/Fallen-leaves089/fullstack-health-check.git "<HOST_SKILLS_DIR>/fullstack-health-check"
+git clone https://github.com/Fallen-leaves089/project-health.git "<HOST_SKILLS_DIR>/project-health"
 ```
 
 ### Manual install
 
-After extracting, copy the entire `fullstack-health-check/` directory into the skills directory. Do not copy only `SKILL.md`; `references/` and `scripts/` must travel with it.
+After extracting, copy the entire `project-health/` directory into the skills directory. Do not copy only `SKILL.md`; `references/` and `scripts/` must travel with it.
 
 ### Use the English skill body
 
@@ -165,9 +169,9 @@ Keep both files in the repository so readers can compare them.
 
 ## Download and signatures
 
-Download official artifacts from [GitHub Releases](https://github.com/Fallen-leaves089/fullstack-health-check/releases) and get all of these files:
+Download official artifacts from [GitHub Releases](https://github.com/Fallen-leaves089/project-health/releases) and get all of these files:
 
-- `fullstack-health-check-<version>.zip`
+- `project-health-<version>.zip`
 - `SHA256SUMS`
 - `SHA256SUMS.sig`
 - `allowed_signers`
@@ -183,27 +187,27 @@ macOS (bundled `shasum`):
 
 ```bash
 shasum -a 256 -c SHA256SUMS
-ssh-keygen -Y verify -f allowed_signers -I fullstack-health-check-release -n file -s SHA256SUMS.sig < SHA256SUMS
+ssh-keygen -Y verify -f allowed_signers -I project-health-release -n file -s SHA256SUMS.sig < SHA256SUMS
 ```
 
 Linux (GNU coreutils):
 
 ```bash
 sha256sum -c SHA256SUMS
-ssh-keygen -Y verify -f allowed_signers -I fullstack-health-check-release -n file -s SHA256SUMS.sig < SHA256SUMS
+ssh-keygen -Y verify -f allowed_signers -I project-health-release -n file -s SHA256SUMS.sig < SHA256SUMS
 ```
 
 Windows PowerShell 5.1 / 7:
 
 ```powershell
-$zip = '.\fullstack-health-check-<version>.zip'
+$zip = '.\project-health-<version>.zip'
 $line = Get-Content .\SHA256SUMS | Where-Object { $_ -match [regex]::Escape([IO.Path]::GetFileName($zip)) } | Select-Object -First 1
 if (-not $line) { throw 'Checksum entry not found' }
 $expected = ($line -split '\s+')[0].ToLowerInvariant()
 $actual = (Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLowerInvariant()
 if ($actual -ne $expected) { throw 'SHA256 mismatch' }
 
-cmd /c "ssh-keygen.exe -Y verify -f allowed_signers -I fullstack-health-check-release -n file -s SHA256SUMS.sig < SHA256SUMS"
+cmd /c "ssh-keygen.exe -Y verify -f allowed_signers -I project-health-release -n file -s SHA256SUMS.sig < SHA256SUMS"
 if ($LASTEXITCODE -ne 0) { throw 'Signature verification failed' }
 ```
 
@@ -213,11 +217,12 @@ See `SIGNING.en.md` for the complete instructions. `SHA256SUMS` and `SHA256SUMS.
 
 Say any of these:
 
-- "Run a full-stack health check"
-- "Check this full-stack project"
+- "Run a project health check"
+- "Do a comprehensive project review"
 - "Pre-release audit"
+- "Check this project before handover"
 - "Find P0/P1 issues before deployment"
-- "Use fullstack-health-check on this repo"
+- "Use project-health on this repo"
 
 ## Requirements
 
@@ -282,6 +287,6 @@ Commercial use requires a written license from the author, but **the author is o
 
 ## Version
 
-- Version: 1.1.2
+- Version: 1.2.0
 - Internal source date: 2026-09-04
-- Public release: 2026-10-29
+- Public release: 2026-10-30
