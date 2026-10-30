@@ -46,6 +46,24 @@ The output is not "please pay attention"; it is a graded list with `file:line` e
 
 It also checks whether the verification method itself is valid, and sets boundaries for platform differences, security, redaction, and repair. The goal is not a longer list of opinions; it is reproducible, traceable conclusions.
 
+## What it caught: a real two-pass health check
+
+> The following comes from two health-check passes on a real multi-client project (2026-08-30 and 2026-09-02). Project names, addresses, credentials, and business details have been removed. This is not demo data, and it is not an industry-wide benchmark.
+
+| Result | Evidence |
+|---|---|
+| **30 graded findings** | 10 P0/P1, 9 P2, and 11 P3; all 10 P0/P1 findings were closed |
+| **Multiple release blockers found before deployment** | A MySQL 8.0 migration would always fail; deployment scripts skipped migrations; a production migration would insert an enabled test account with a known password |
+| **Security risks traced to concrete paths** | Runtime configuration hard-coded JWT/DB/Redis credentials; using the dev profile could enable a default SMS code and mock WeChat login while skipping production validation |
+| **Real regression after fixes** | Backend tests passed 115/115; containerized migrations passed 10/10 three times in a row; Android both flavors and the merchant Web build succeeded |
+| **Two more real bugs found during repair** | A deployment script resolved the wrong project root; unstable database readiness made migration regressions fail randomly |
+| **One false green eliminated** | A guard script swallowed migration failures and still reported GREEN; it now treats failure as invalid verification and is proven with positive and negative cases |
+| **Deployment drift exposed** | The deployed JAR differed from local build output in 33 classes and was missing 7 classes; the report explicitly marked that this was not re-verified later |
+
+> These numbers do not mean "the checklist is long." They mean findings moved from **unknown** to **quantified**, fixes moved from **claimed complete** to **re-runnable**, and the verifier itself is now protected by failing cases.
+
+**The limits are stated too**: the project did not claim "all clear"; some P2/P3 items remained open; credentials already in Git history still required real rotation; and the deployed-JAR drift was not re-checked later. Keeping those limits prevents "passed this pass" from being misread as "secure forever."
+
 ## What's inside
 
 ```text
