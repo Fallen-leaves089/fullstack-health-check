@@ -1,11 +1,11 @@
 ---
-name: fullstack-health-check
-description: Periodic health check for full-stack projects. Combines project history, a two-axis standards/spec review, and real build/container regressions to produce a graded P0-P3 findings report. Use when the user asks for a full-stack check, pre-release audit, or comprehensive issue review.
-version: 1.1.2
+name: project-health
+description: Evidence-driven health checks for existing software projects: history-first review, standards/spec two-axis audit, real build/migration/container regressions, and explicit verification, platform, security, and redaction boundaries, ending in an evidence-linked P0-P3 findings report. Use for periodic reviews, pre-release audits, project handovers, and whole-project diagnosis.
+version: 1.2.0
 license: PolyForm-Noncommercial-1.0.0
 ---
 
-# Full-Stack Health Check
+# Project Health Check
 
 [中文](SKILL.md) | [English](SKILL.en.md)
 
@@ -13,7 +13,7 @@ license: PolyForm-Noncommercial-1.0.0
 
 > This is the English mirror. The default `SKILL.md` is Chinese; to use this version, copy it over `SKILL.md` in your skill directory.
 
-Run a periodic health check on an existing project and produce a **graded, evidence-linked, checkable** findings report. It works for web frontends/backends, mobile apps, database migrations, containerized deployments, and other multi-layer projects.
+Run a periodic health check on an existing software project and produce a **graded, evidence-linked, checkable** findings report. It works for services, web and mobile clients, database migrations, containerized deployment, and other project layers; full-stack is one common case, not the boundary of the skill. The workflow also covers verification discipline, platform command differences, security boundaries, redaction, and repair boundaries.
 
 > The core workflow is platform-neutral. See `references/platform-commands.en.md` for side-by-side commands; Windows-only commands and traps live in `references/windows-pitfalls.en.md`, and macOS, Linux, and WSL2 can skip that section.
 

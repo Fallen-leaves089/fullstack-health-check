@@ -2,7 +2,7 @@
 
 [中文](windows-pitfalls.md) | **English**
 
-This list comes from real full-stack checks. Its purpose is to keep reviewers from hitting the same Windows walls. Commands use PowerShell by default; Git Bash or WSL is called out explicitly when needed.
+This list comes from real project checks. Its purpose is to keep reviewers from hitting the same Windows walls. Commands use PowerShell by default; Git Bash or WSL is called out explicitly when needed.
 
 > Rule: confirm the current shell, interpreter, and tool path before running a command. Do not put bash syntax inside PowerShell, and do not assume every Windows tool is directly callable from Git Bash.
 

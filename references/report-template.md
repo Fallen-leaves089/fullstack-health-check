@@ -1,4 +1,4 @@
-# <PROJECT> 全栈检查报告
+# <PROJECT> 项目健康检查报告
 
 [中文](report-template.md) | [English](report-template.en.md)
 

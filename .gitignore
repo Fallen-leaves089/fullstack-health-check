@@ -5,7 +5,7 @@ __pycache__/
 Thumbs.db
 
 # Release output and local signing material
-/fullstack-health-check-*.zip
+/project-health-*.zip
 /SHA256SUMS
 /SHA256SUMS.sig
 *.key

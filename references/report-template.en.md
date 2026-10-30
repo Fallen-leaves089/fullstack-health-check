@@ -1,4 +1,4 @@
-# <PROJECT> Full-Stack Health Check Report
+# <PROJECT> Project Health Check Report
 
 [中文](report-template.md) | **English**
 

@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.2.0 - 2026-10-30
+
+### 中文
+
+- 项目、Skill ID、仓库目录和发布包统一更名为 `project-health`。
+- 将定位从“全栈体检”扩展为“软件项目健康检查”；全栈、服务、Web / 移动客户端、数据库与容器部署都属于适用范围。
+- 更新安装路径、克隆链接、签名 principal、发布包名、GitHub 描述和 topics。
+- 旧仓库 URL 由 GitHub 自动重定向；历史 `v1.1.2` 发布物保持原名，不重写历史记录。
+- 检查流程与报告格式不变；版本升级到 1.2.0。
+
+### English
+
+- Renamed the project, skill ID, repository directory, and release artifacts to `project-health`.
+- Reframed the project from a full-stack check to a software-project health check; full-stack, services, web and mobile clients, databases, and containerized deployment are all in scope.
+- Updated install paths, clone URLs, signing principal, artifact names, GitHub description, and topics.
+- The old repository URL redirects automatically; the historical `v1.1.2` release keeps its original asset names.
+- The review workflow and report format are unchanged; bumped the version to 1.2.0.
+
 ## 1.1.2 - 2026-10-29
 
 ### 中文
