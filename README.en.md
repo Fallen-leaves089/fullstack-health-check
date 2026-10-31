@@ -2,15 +2,19 @@
 
 [中文](README.md) | [English](README.en.md)
 
-A periodic, evidence-driven health-check skill for existing software projects. It combines project-specific history, a two-axis review (standards vs. spec), real build/migration/container regressions, and key-path verification, then produces a P0-P3 findings report with evidence locations. It applies to services, web and mobile clients, databases, containers, and deployment; full-stack is one common case, not the boundary.
+**One line: evidence-driven health checks and delivery acceptance for existing software projects, surfacing issues that would block release, handover, or delivery.**
 
-> **License**: PolyForm Noncommercial License 1.0.0. Noncommercial use only by default; commercial use requires a written license from the author. Contact `chenshuidelaye@qq.com` to discuss terms. See [COMMERCIAL.en.md](COMMERCIAL.en.md).
+Use it before release, before handover, for periodic reviews, and to accept work produced or modified by an agent. The output is not "please pay attention"; it is a graded P0-P3 list with `file:line` evidence, impact, recommendation, and verification.
 
-> Read-only by default. Report first; do not change code without an explicit instruction.
+> **Boundary**: Code generation is handled by the host agent; this skill does not replace that capability. It verifies generated results with evidence checks, real regressions, and delivery acceptance. It does not promise zero defects, but it can significantly reduce detectable defects within the checks it covers. Actual results depend on the project baseline, agent capability, test coverage, and execution depth.
 
-## Install first
+> Read-only by default during review. Report first; do not change code without an explicit instruction.
 
-This is a **host-neutral** skill package, not tied to Codex, and not a double-click installer. Any host that supports the Agent Skills / `SKILL.md` directory format can use it: extract the archive and copy the entire `project-health/` directory into that host's skills directory.
+Quick navigation: [Quick start](#quick-start) · [What it's for](#what-its-for) · [What it caught](#what-it-caught-a-real-two-pass-health-check) · [Triggers](#triggers) · [Self-check](#self-check) · [License](#license)
+
+## Quick start
+
+This is a host-neutral skill package, not tied to Codex, and not a double-click installer. Any host that supports the Agent Skills / `SKILL.md` directory format can use it.
 
 | Host | Common skills directory |
 |---|---|
@@ -22,29 +26,45 @@ Windows PowerShell:
 
 ```powershell
 Copy-Item -LiteralPath '.\project-health' -Destination '<HOST_SKILLS_DIR>' -Recurse -Force
+Test-Path '<HOST_SKILLS_DIR>\project-health\SKILL.md'
 ```
 
 macOS / Linux:
 
 ```bash
 cp -R ./project-health "<HOST_SKILLS_DIR>/"
+test -f "<HOST_SKILLS_DIR>/project-health/SKILL.md"
 ```
 
-The directory root must contain `SKILL.md`; do not copy only that file. See "Install" below for examples.
+Or clone the repository:
 
-> **Upgrading from 1.1.x**: this project is now named `project-health`. Remove the old `fullstack-health-check` skill directory before installing the new one so both versions do not coexist.
+```bash
+git clone https://github.com/Fallen-leaves089/project-health.git "<HOST_SKILLS_DIR>/project-health"
+```
 
-## What it solves
+The directory root must contain `SKILL.md`; do not copy only that file. `references/` and `scripts/` must travel with it.
 
-Many "project checks" turn into two things: reading some code, then listing generic advice. This skill enforces three things instead:
+> **Upgrading from 1.1.x**: remove the old `fullstack-health-check` skill directory before installing `project-health`, so both versions do not coexist.
 
-1. **Read the project's own history first** — previous findings, build baselines, environment traps, and user prohibitions are more valuable than a generic checklist.
-2. **Two-axis review** — standards compliance and spec compliance are reviewed separately, so "ugly code" and "missing requirement" do not get mixed into one bucket.
-3. **Real regression** — tests, builds, migrations, and compose configuration are actually run, not just read.
+Skill hosts load the Chinese `SKILL.md` by default. For English, copy `SKILL.en.md` over `SKILL.md`. Both files stay in the repository for comparison and updates.
 
-The output is not "please pay attention"; it is a graded list with `file:line` evidence, impact, recommendation, and verification method.
+## What it's for
 
-It also checks whether the verification method itself is valid, and sets boundaries for platform differences, security, redaction, and repair. The goal is not a longer list of opinions; it is reproducible, traceable conclusions.
+- **Pre-release audit**: find issues that block deployment, migration, or startup.
+- **Periodic review**: re-align previous findings, build baselines, environment traps, and user prohibitions.
+- **Handover acceptance**: give the next owner an evidence-linked list of findings, gaps, and verification methods.
+- **Agent delivery acceptance**: verify work produced or modified by an agent with evidence, regression, and explicit boundaries.
+
+It applies to services, web and mobile clients, database migrations, containerized deployment, and other project layers; full-stack is one common case, not the boundary.
+
+## How it works
+
+1. **Read the project's own history first**: historical reports, `AGENTS.md`, `docs/`, change logs, previous findings, and build baselines are closer to the truth than a generic checklist.
+2. **Two-axis review**: standards compliance and spec compliance are reviewed separately, so "ugly code" and "missing requirement" do not get mixed into one bucket.
+3. **Real regression**: tests, builds, migrations, compose configuration, and key paths are actually run, not just read.
+4. **Evidence output**: every finding includes `file:line`, impact, recommendation, and verification method; the report also lists "verified clean" areas and "not covered this round".
+
+It also checks whether the verification method itself is valid: positive and negative cases, failure exit codes, whether commands actually ran, and whether a guard script can produce a false green.
 
 ## What it caught: a real two-pass health check
 
@@ -64,173 +84,6 @@ It also checks whether the verification method itself is valid, and sets boundar
 
 **The limits are stated too**: the project did not claim "all clear"; some P2/P3 items remained open; credentials already in Git history still required real rotation; and the deployed-JAR drift was not re-checked later. Keeping those limits prevents "passed this pass" from being misread as "secure forever."
 
-## What's inside
-
-```text
-project-health/
-├── SKILL.md / SKILL.en.md                # skill body (Chinese default / English mirror)
-├── README.md / README.en.md              # this file
-├── LICENSE                               # PolyForm Noncommercial 1.0.0 (English original)
-├── LICENSE.zh-CN.md                      # Chinese summary, not a substitute
-├── COMMERCIAL.md / COMMERCIAL.en.md      # commercial licensing
-├── CONTRIBUTING.md / CONTRIBUTING.en.md  # contribution guide
-├── SANITIZATION.md / SANITIZATION.en.md  # sanitization scope and audit
-├── SECURITY.md                           # security reporting
-├── SIGNING.md / SIGNING.en.md            # download verification and release signing
-├── release-signing-key.pub               # Ed25519 release public key
-├── allowed_signers                       # permitted OpenSSH signing identity
-├── NOTICE                                # copyright and Required Notice
-├── CHANGELOG.md                          # version history
-├── .gitattributes / .gitignore           # line endings and ignore rules
-├── .editorconfig                         # editor encoding and indentation
-├── .github/workflows/verify.yml          # 3-OS CI
-├── references/
-│   ├── platform-commands.md / .en.md     # Windows / macOS / Linux / WSL2 commands
-│   ├── windows-pitfalls.md / .en.md      # Windows traps and workarounds
-│   ├── verification-playbook.md / .en.md # debugging and verification discipline
-│   └── report-template.md / .en.md       # P0-P3 report template
-└── scripts/
-    ├── check_redaction.py                # cross-platform redaction scanner
-    ├── verify_package.py                 # cross-platform package verifier
-    ├── check-redaction.ps1               # Windows PowerShell scanner
-    └── verify-package.ps1                # Windows PowerShell verifier
-```
-
-## Platform support
-
-| Platform | Core skill | Verification |
-|---|---|---|
-| Windows 10/11 + PowerShell 5.1/7 | Yes | `scripts/verify-package.ps1` or `python scripts/verify_package.py` |
-| macOS / Linux + Python 3.9+ | Yes | `python3 scripts/verify_package.py` |
-| WSL2 | Yes | `python3 scripts/verify_package.py` or PowerShell 7 |
-| Other Unix-like systems + Python 3.9+ | Yes | `python3 scripts/verify_package.py` |
-| Any Agent Skills host (Codex, Claude Code, etc.) | Yes | Plain Markdown skill format |
-
-The core skill is plain Markdown and Git commands, so it is not tied to Windows or a specific host. The Python verifier uses only the standard library and does not need network access. See `references/platform-commands.md` / `.en.md` for side-by-side Windows, macOS, Linux, and WSL2 commands; Windows-specific traps are isolated in `references/windows-pitfalls.md` / `.en.md`.
-
-## Install
-
-### Generic install: any Agent Skills host
-
-This package does not depend on a Codex-specific format. A host only needs to read `SKILL.md` and allow access to `references/` and `scripts/` in the same directory.
-
-1. Extract the release archive.
-2. Find that host's skills directory.
-3. Copy the entire `project-health/` directory into it.
-4. Confirm that `<SKILLS_DIR>/project-health/SKILL.md` exists.
-
-| Host | Common skills directory | Notes |
-|---|---|---|
-| Codex | `~/.codex/skills/` | Example, not the only supported host |
-| Claude Code | `~/.claude/skills/` | Example |
-| Other Agent Skills hosts | The host's configured skills directory | Follow the host documentation |
-
-Windows PowerShell:
-
-```powershell
-$source = '.\project-health'
-$skills = '<HOST_SKILLS_DIR>'
-New-Item -ItemType Directory -Force -Path $skills | Out-Null
-Copy-Item -LiteralPath $source -Destination $skills -Recurse -Force
-Test-Path (Join-Path $skills 'project-health\SKILL.md')
-```
-
-macOS / Linux:
-
-```bash
-mkdir -p "<HOST_SKILLS_DIR>"
-cp -R ./project-health "<HOST_SKILLS_DIR>/"
-test -f "<HOST_SKILLS_DIR>/project-health/SKILL.md"
-```
-
-### Example: Codex
-
-```bash
-mkdir -p ~/.codex/skills
-cp -R ./project-health ~/.codex/skills/
-```
-
-On Windows, use `$env:USERPROFILE\.codex\skills` as the destination.
-
-### Example: Claude Code
-
-```bash
-mkdir -p ~/.claude/skills
-cp -R ./project-health ~/.claude/skills/
-```
-
-On Windows, use `$env:USERPROFILE\.claude\skills` as the destination.
-
-### Other hosts
-
-Put the whole directory in the skills directory configured by that host. Directory names, loading behavior, and whether a restart is required vary by host; follow its documentation. Do not assume every host uses `.codex` or `.claude`.
-
-### Git clone
-
-```bash
-git clone https://github.com/Fallen-leaves089/project-health.git "<HOST_SKILLS_DIR>/project-health"
-```
-
-### Manual install
-
-After extracting, copy the entire `project-health/` directory into the skills directory. Do not copy only `SKILL.md`; `references/` and `scripts/` must travel with it.
-
-### Use the English skill body
-
-Skill hosts load `SKILL.md` (Chinese) by default. To use the English version, replace `SKILL.md` in your installed skill directory with `SKILL.en.md`:
-
-```bash
-cp SKILL.en.md SKILL.md
-```
-
-Keep both files in the repository so readers can compare them.
-
-## Download and signatures
-
-Download official artifacts from [GitHub Releases](https://github.com/Fallen-leaves089/project-health/releases) and get all of these files:
-
-- `project-health-<version>.zip`
-- `SHA256SUMS`
-- `SHA256SUMS.sig`
-- `allowed_signers`
-- `release-signing-key.pub`
-
-Check the public-key fingerprint first:
-
-```bash
-ssh-keygen -lf release-signing-key.pub
-```
-
-macOS (bundled `shasum`):
-
-```bash
-shasum -a 256 -c SHA256SUMS
-ssh-keygen -Y verify -f allowed_signers -I project-health-release -n file -s SHA256SUMS.sig < SHA256SUMS
-```
-
-Linux (GNU coreutils):
-
-```bash
-sha256sum -c SHA256SUMS
-ssh-keygen -Y verify -f allowed_signers -I project-health-release -n file -s SHA256SUMS.sig < SHA256SUMS
-```
-
-Windows PowerShell 5.1 / 7:
-
-```powershell
-$zip = '.\project-health-<version>.zip'
-$line = Get-Content .\SHA256SUMS | Where-Object { $_ -match [regex]::Escape([IO.Path]::GetFileName($zip)) } | Select-Object -First 1
-if (-not $line) { throw 'Checksum entry not found' }
-$expected = ($line -split '\s+')[0].ToLowerInvariant()
-$actual = (Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLowerInvariant()
-if ($actual -ne $expected) { throw 'SHA256 mismatch' }
-
-cmd /c "ssh-keygen.exe -Y verify -f allowed_signers -I project-health-release -n file -s SHA256SUMS.sig < SHA256SUMS"
-if ($LASTEXITCODE -ne 0) { throw 'Signature verification failed' }
-```
-
-See `SIGNING.en.md` for the complete instructions. `SHA256SUMS` and `SHA256SUMS.sig` are separate assets created after the zip; they are not inside the zip.
-
 ## Triggers
 
 Say any of these:
@@ -249,6 +102,21 @@ Say any of these:
 - The review phase is read-only by default; code changes require an explicit instruction.
 - For Windows-specific troubleshooting, read `references/windows-pitfalls.en.md` first.
 
+## Package layout
+
+```text
+project-health/
+├── SKILL.md / SKILL.en.md                # skill body (Chinese default / English mirror)
+├── README.md / README.en.md              # this file
+├── references/                           # platform commands, Windows traps, verification, reports
+├── scripts/                              # cross-platform verification and redaction scanners
+└── LICENSE / COMMERCIAL / SIGNING / SANITIZATION
+```
+
+## Platform support
+
+The core skill uses only Markdown and Git commands. It works on Windows 10/11 + PowerShell 5.1/7, macOS / Linux + Python 3.9+, and WSL2. The Python verifier uses only the standard library and needs no network access.
+
 ## Self-check
 
 From the package root:
@@ -260,23 +128,16 @@ python3 scripts/verify_package.py
 On Windows:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify-package.ps1
-```
-
-Or with Python on Windows:
-
-```powershell
 python scripts\verify_package.py
 ```
 
-The verifier checks:
+If Python is unavailable, use the PowerShell verifier:
 
-- required files are present
-- text files are UTF-8 without BOM
-- relative Markdown links resolve
-- the redaction scanner passes its positive/negative self-test
-- the package has no personal paths, private keys, tokens, or private IPs
-- `SKILL.md` / `SKILL.en.md` frontmatter and language links are present
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify-package.ps1
+```
+
+It checks required files, UTF-8 without BOM, Markdown links, the redaction self-test, sensitive patterns in the package, and `SKILL.md` / `SKILL.en.md` frontmatter, version, and language links.
 
 Run only the redaction scanner:
 
@@ -285,11 +146,25 @@ python3 scripts/check_redaction.py --self-test
 python3 scripts/check_redaction.py --path .
 ```
 
-## Sanitization
+On Windows PowerShell, use `scripts/check-redaction.ps1`; see `SANITIZATION.en.md` for the full commands.
 
-This public version was derived from an internal skill and rewritten to remove personal absolute paths, usernames, project/client identifiers, internal platform names, real domains and private addresses, secrets, and incident-specific data.
+## Download and signatures
 
-The review scope is documented in `SANITIZATION.en.md`. If you find a possible leak, open an issue titled `[Security]` and describe only the file and the type of information. Do not paste the sensitive value.
+Download official artifacts from [GitHub Releases](https://github.com/Fallen-leaves089/project-health/releases): `project-health-<version>.zip`, `SHA256SUMS`, `SHA256SUMS.sig`, `allowed_signers`, and `release-signing-key.pub`.
+
+Check the public-key fingerprint first:
+
+```bash
+ssh-keygen -lf release-signing-key.pub
+```
+
+See `SIGNING.md` / `SIGNING.en.md` for the complete macOS, Linux, and Windows verification commands. `SHA256SUMS` and `SHA256SUMS.sig` are separate assets created after the zip; they are not inside the zip.
+
+## Security and redaction
+
+The review phase is read-only by default. The public version removes personal absolute paths, usernames, project/client identifiers, internal platform names, real domains and private addresses, secrets, and incident details. If you find a possible leak, open an issue or contact the maintainer through a public channel; do not paste the sensitive value.
+
+See `SANITIZATION.en.md` for the full scope and `SECURITY.md` for reporting.
 
 ## Contributing
 

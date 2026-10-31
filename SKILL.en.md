@@ -1,6 +1,6 @@
 ---
 name: project-health
-description: Evidence-driven health checks for existing software projects: history-first review, standards/spec two-axis audit, real build/migration/container regressions, and explicit verification, platform, security, and redaction boundaries, ending in an evidence-linked P0-P3 findings report. Use for periodic reviews, pre-release audits, project handovers, and whole-project diagnosis.
+description: Evidence-driven health checks and delivery acceptance for existing software projects: history-first review, standards/spec two-axis audit, real build/migration/container regressions, ending in an evidence-linked P0-P3 findings report. Use for pre-release audits, periodic reviews, project handovers, and accepting work produced or modified by an agent.
 version: 1.2.0
 license: PolyForm-Noncommercial-1.0.0
 ---
@@ -13,7 +13,15 @@ license: PolyForm-Noncommercial-1.0.0
 
 > This is the English mirror. The default `SKILL.md` is Chinese; to use this version, copy it over `SKILL.md` in your skill directory.
 
-Run a periodic health check on an existing software project and produce a **graded, evidence-linked, checkable** findings report. It works for services, web and mobile clients, database migrations, containerized deployment, and other project layers; full-stack is one common case, not the boundary of the skill. The workflow also covers verification discipline, platform command differences, security boundaries, redaction, and repair boundaries.
+## Position and boundaries
+
+Run evidence-driven health checks and delivery acceptance on an existing software project, producing a **graded, evidence-linked, checkable** findings report. It works for services, web and mobile clients, database migrations, containerized deployment, and other project layers; full-stack is one common case, not the boundary of the skill.
+
+- **Code generation is handled by the host agent**; this skill does not replace that capability. It verifies generated results with evidence checks, real regressions, and delivery acceptance.
+- **It does not promise zero defects**; it can significantly reduce detectable defects within the checks it covers. Actual results depend on the project baseline, agent capability, test coverage, and execution depth.
+- **The review phase is read-only by default**; report findings first and do not change code without an explicit instruction.
+
+The workflow also covers verification discipline, platform command differences, security boundaries, redaction, and repair boundaries.
 
 > The core workflow is platform-neutral. See `references/platform-commands.en.md` for side-by-side commands; Windows-only commands and traps live in `references/windows-pitfalls.en.md`, and macOS, Linux, and WSL2 can skip that section.
 
